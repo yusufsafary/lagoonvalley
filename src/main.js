@@ -13,6 +13,7 @@ import { HUD }          from './components/HUD.js';
 import { DialogueBox }  from './components/DialogueBox.js';
 import { InventoryBar } from './components/InventoryBar.js';
 import { Shop }         from './components/Shop.js';
+import { profile }      from './components/Profile.js';
 
 // ── Toast ────────────────────────────────────────────
 let _toastTimer = null;
@@ -1150,4 +1151,7 @@ function init() {
   requestAnimationFrame(gameLoop);
 }
 
-init();
+// Wire up profile system — shows login modal on first visit,
+// then starts the game once profile is ready.
+window._profileModule = profile;
+profile.init(() => init());

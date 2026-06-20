@@ -1,22 +1,15 @@
 // ═══════════════════════════════════════════════════════
 // INVENTORY BAR — bottom slot strip showing seeds + crops
-// Clicking a slot selects it for planting/selling
 // ═══════════════════════════════════════════════════════
 import { CROPS } from '../store/gameState.js';
-
-const ITEM_ICONS = {
-  carrot:  '🥕', tomato: '🍅', coconut: '🥥', melon: '🍈',
-  // harvested crops use same icons
-};
 
 export class InventoryBar {
   constructor(onSelect) {
     this._bar      = document.getElementById('inventory-bar');
-    this._onSelect = onSelect; // callback(itemKey)
+    this._onSelect = onSelect;
     this._slots    = {};
   }
 
-  /** Re-render from inventory object + selected key */
   update(inventory, selectedItem) {
     this._bar.innerHTML = '';
     this._slots = {};
@@ -34,8 +27,9 @@ export class InventoryBar {
 
     for (const [key, count] of items) {
       const cropDef = CROPS[key];
-      const icon    = ITEM_ICONS[key] || '📦';
-      const name    = cropDef ? cropDef.name : key;
+      // Use icon directly from CROPS definition — covers all crops
+      const icon = cropDef ? cropDef.icon : '📦';
+      const name = cropDef ? cropDef.name : key;
 
       const slot = document.createElement('div');
       slot.className = 'inv-slot' + (key === selectedItem ? ' selected' : '');

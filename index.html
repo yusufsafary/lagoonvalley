@@ -384,6 +384,85 @@
       box-shadow: 0 6px 28px rgba(0,0,0,.45);
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+
+    /* ── Profile Badge (HUD) ─────────────────── */
+    #profile-badge {
+      display: none; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.09); border: 1.5px solid rgba(255,255,255,.14);
+      border-radius: 20px; padding: 4px 10px 4px 6px;
+      pointer-events: auto; cursor: pointer; margin-top: 4px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      transition: background .18s;
+    }
+    #profile-badge:hover { background: rgba(78,205,196,.15); }
+    .pb-av   { font-size: 16px; line-height: 1; }
+    .pb-name { font-size: 11px; font-weight: 800; color: rgba(220,245,240,.9);
+               text-shadow: 0 1px 4px rgba(0,0,0,.8); max-width: 80px;
+               overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── Profile Dashboard (inside menu) ──────── */
+    .pd-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .pd-avatar { font-size: 36px; }
+    .pd-name   { font-size: 17px; font-weight: 900; color: #4ecdc4; }
+    .pd-sub    { font-size: 11px; color: rgba(120,180,200,.55); margin-top: 2px; }
+    .pd-stats  { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .pd-stat   { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.07);
+                 border-radius: 12px; padding: 10px 12px; text-align: center; }
+    .pd-val    { display: block; font-size: 13px; font-weight: 900; color: #fff; }
+    .pd-key    { display: block; font-size: 10px; color: rgba(120,170,200,.55);
+                 margin-top: 2px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+    #profile-dashboard { margin-bottom: 14px; }
+
+    /* ── Profile Login Modal ─────────────────── */
+    #profile-modal {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      display: none; align-items: center; justify-content: center;
+    }
+    #profile-panel {
+      background: linear-gradient(165deg, rgba(8,20,40,.97) 0%, rgba(4,14,28,.97) 100%);
+      border: 1.5px solid rgba(78,205,196,.25); border-radius: 28px;
+      padding: 36px 28px 32px; width: min(380px, calc(100vw - 28px));
+      box-shadow: 0 32px 80px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.06);
+      text-align: center;
+    }
+    #profile-panel .pm-logo { font-size: 56px; margin-bottom: 8px; }
+    #profile-panel h2 { font-size: 22px; font-weight: 900; color: #4ecdc4; margin-bottom: 4px; }
+    #profile-panel p  { font-size: 13px; color: rgba(150,200,220,.6); margin-bottom: 24px; }
+    #profile-name {
+      width: 100%; padding: 13px 18px; border-radius: 16px;
+      background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.14);
+      color: #fff; font-size: 16px; font-weight: 800; font-family: inherit;
+      outline: none; margin-bottom: 18px; text-align: center;
+      transition: border-color .2s;
+    }
+    #profile-name::placeholder { color: rgba(255,255,255,.25); font-weight: 600; }
+    #profile-name:focus { border-color: rgba(78,205,196,.5); }
+    .av-label  { font-size: 11px; font-weight: 800; color: rgba(120,180,200,.55);
+                 text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+    #avatar-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 22px; }
+    .av-btn {
+      font-size: 24px; width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.08);
+      cursor: pointer; transition: all .18s; display: flex; align-items: center; justify-content: center;
+    }
+    .av-btn:hover  { background: rgba(78,205,196,.15); border-color: rgba(78,205,196,.3); }
+    .av-btn.av-selected { background: rgba(78,205,196,.22); border-color: rgba(78,205,196,.6);
+                          box-shadow: 0 0 14px rgba(78,205,196,.3); transform: scale(1.12); }
+    #profile-submit {
+      width: 100%; padding: 14px; border-radius: 18px; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #4ecdc4 0%, #26a69a 100%);
+      color: #001814; font-size: 16px; font-weight: 900; font-family: inherit;
+      box-shadow: 0 6px 24px rgba(78,205,196,.35); transition: transform .12s;
+    }
+    #profile-submit:active { transform: scale(.95); }
+
+    /* ── Orynth Badge ────────────────────────── */
+    .orynth-badge {
+      display: flex; justify-content: center; margin-top: 16px;
+    }
+    .orynth-badge a { display: inline-block; opacity: 0.85; transition: opacity .2s; }
+    .orynth-badge a:hover { opacity: 1; }
   </style>
 </head>
 <body>
@@ -408,6 +487,7 @@
     <div id="hud-left">
       <div id="hud-day">Day 1</div>
       <div id="hud-time">06:00 AM</div>
+      <div id="profile-badge" onclick="openProfileMenu()"></div>
     </div>
     <div id="hud-money">💰 100g</div>
   </div>
@@ -438,6 +518,10 @@
         <img src="/logo.jpg" alt="" onerror="this.style.display='none'"/>
         <span>Lagoon Valley</span>
       </div>
+
+      <!-- Profile Dashboard -->
+      <div id="profile-dashboard"></div>
+
       <nav class="menu-nav">
         <a href="/how-to-play.html">
           <span class="menu-icon">📖</span>
@@ -475,9 +559,20 @@
           <span class="menu-icon">🎮</span>
           <span class="menu-text">Back to Game</span>
         </button>
+        <button class="menu-nav-logout" onclick="handleLogout()" style="display:flex;align-items:center;gap:14px;padding:12px 18px;border-radius:14px;background:rgba(255,80,80,.08);border:1.5px solid rgba(255,80,80,.15);color:rgba(255,140,140,.8);font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:4px;transition:background .18s;">
+          <span class="menu-icon">🚪</span>
+          <span class="menu-text">Log Out</span>
+        </button>
       </nav>
+
+      <div class="orynth-badge">
+        <a href="https://orynth.dev/projects/lagoon-valley" target="_blank" rel="noopener">
+          <img src="https://orynth.dev/api/badge/lagoon-valley?theme=light&style=default" alt="Featured on Orynth" width="200" height="62" style="border-radius:10px;" onerror="this.style.display='none'"/>
+        </a>
+      </div>
+
       <div class="menu-footer">
-        v0.2.0 · Open source · <a href="https://lagoonvalley.xyz">lagoonvalley.xyz</a>
+        v0.3.0 · Open source · <a href="https://lagoonvalley.xyz">lagoonvalley.xyz</a>
       </div>
     </div>
   </div>
@@ -524,6 +619,30 @@
       btn.classList.toggle('open', open);
     }
   </script>
+  <!-- Profile Login Modal -->
+  <div id="profile-modal">
+    <div id="profile-panel">
+      <div class="pm-logo">🌴</div>
+      <h2>Welcome to Lagoon Valley</h2>
+      <p>Create your farmer profile to start playing</p>
+      <input id="profile-name" type="text" maxlength="24" placeholder="Your farmer name…" autocomplete="off" spellcheck="false"/>
+      <div class="av-label">Choose your avatar</div>
+      <div id="avatar-grid"></div>
+      <button id="profile-submit">Start Farming 🌱</button>
+    </div>
+  </div>
+
   <script type="module" src="/src/main.js"></script>
+  <script>
+    function openProfileMenu() {
+      document.getElementById('game-menu').classList.add('open');
+      if (window._profileModule) {
+        window._profileModule.updateDashboard();
+      }
+    }
+    function handleLogout() {
+      if (window._profileModule) window._profileModule.logout();
+    }
+  </script>
 </body>
 </html>
