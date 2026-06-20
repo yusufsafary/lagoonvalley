@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Lagoon Valley</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #1a0a2e;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      touch-action: none;
+    }
+    #canvas-container {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+    }
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      touch-action: none;
+    }
+
+    /* ── HUD ────────────────────────────────────── */
+    #hud {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px;
+      background: linear-gradient(to bottom, rgba(0,0,0,.45), transparent);
+      pointer-events: none;
+      z-index: 10;
+    }
+    #hud-time { color: #fff; font-size: 14px; font-weight: 700; text-shadow: 0 1px 3px #000; }
+    #hud-money { color: #ffe066; font-size: 14px; font-weight: 700; text-shadow: 0 1px 3px #000; }
+    #hud-day { color: #a8e6cf; font-size: 12px; text-shadow: 0 1px 3px #000; }
+    #tide-indicator {
+      position: fixed; top: 46px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,80,180,.6); color: #8ef; padding: 2px 10px;
+      border-radius: 12px; font-size: 11px; font-weight: 600;
+      pointer-events: none; z-index: 10;
+    }
+
+    /* ── Inventory Bar ──────────────────────────── */
+    #inventory-bar {
+      position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px;
+      background: rgba(0,0,0,.55); border-radius: 14px; padding: 6px 8px;
+      border: 1px solid rgba(255,255,255,.15);
+      z-index: 10;
+      max-width: calc(100vw - 28px);
+      overflow-x: auto;
+    }
+    .inv-slot {
+      width: 50px; height: 50px; min-width: 50px;
+      background: rgba(255,255,255,.08); border-radius: 10px;
+      border: 2px solid rgba(255,255,255,.18);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; color: #fff; font-size: 11px;
+      transition: border-color .15s, background .15s;
+      user-select: none;
+    }
+    .inv-slot.selected { border-color: #ffe066; background: rgba(255,224,102,.12); }
+    .inv-slot .slot-icon { font-size: 20px; }
+    .inv-slot .slot-count { font-size: 10px; color: #ffe066; font-weight: 700; }
+    .inv-slot .slot-name { font-size: 8px; color: #aaa; }
+
+    /* ── Action Button ──────────────────────────── */
+    #action-btn {
+      position: fixed; bottom: 90px; right: 18px;
+      width: 68px; height: 68px;
+      background: linear-gradient(135deg, #4ecdc4, #44a08d);
+      border-radius: 50%; border: 3px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10;
+      font-size: 28px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.4);
+      transition: transform .1s, background .2s;
+      user-select: none;
+    }
+    #action-btn:active { transform: scale(.92); }
+    #action-label {
+      position: fixed; bottom: 162px; right: 10px;
+      color: #fff; font-size: 10px; font-weight: 600;
+      text-shadow: 0 1px 3px #000; z-index: 10;
+      text-align: center; width: 84px;
+      pointer-events: none;
+    }
+
+    /* ── Shop Button ────────────────────────────── */
+    #shop-btn {
+      position: fixed; top: 10px; right: 14px;
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      color: #333; font-weight: 800; font-size: 11px;
+      padding: 6px 12px; border-radius: 20px; cursor: pointer;
+      z-index: 10; border: 2px solid rgba(255,255,255,.4);
+      box-shadow: 0 2px 10px rgba(0,0,0,.3);
+      user-select: none;
+    }
+    #shop-btn:active { transform: scale(.95); }
+
+    /* ── Joystick ───────────────────────────────── */
+    #joystick-zone {
+      position: fixed; bottom: 80px; left: 18px;
+      width: 120px; height: 120px; z-index: 10;
+      pointer-events: all;
+    }
+    #joystick-base {
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,.12);
+      border: 2px solid rgba(255,255,255,.25);
+      border-radius: 50%;
+    }
+    #joystick-stick {
+      position: absolute;
+      width: 46px; height: 46px;
+      background: rgba(255,255,255,.35);
+      border: 2px solid rgba(255,255,255,.5);
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      transition: background .1s;
+    }
+
+    /* ── Dialogue Box ───────────────────────────── */
+    #dialogue-box {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      width: min(420px, calc(100vw - 28px));
+      background: rgba(10,20,40,.92); border: 2px solid rgba(100,200,255,.4);
+      border-radius: 16px; padding: 14px 18px;
+      color: #dff; font-size: 13px; line-height: 1.5;
+      z-index: 20; display: none;
+      box-shadow: 0 4px 24px rgba(0,0,0,.6);
+    }
+    #dialogue-box .npc-name {
+      font-weight: 800; color: #4fc; margin-bottom: 4px; font-size: 12px;
+    }
+    #dialogue-box .dialogue-text { }
+    #dialogue-close {
+      margin-top: 10px; text-align: right;
+      color: #4fc; font-size: 11px; cursor: pointer; font-weight: 700;
+    }
+
+    /* ── Shop Modal ─────────────────────────────── */
+    #shop-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,.7);
+      display: none; align-items: center; justify-content: center;
+      z-index: 30;
+    }
+    #shop-modal.open { display: flex; }
+    #shop-panel {
+      background: linear-gradient(160deg, #1a2a1a, #0d1a2a);
+      border: 2px solid rgba(100,220,100,.3);
+      border-radius: 20px; padding: 20px;
+      width: min(380px, calc(100vw - 28px));
+      max-height: 80vh; overflow-y: auto;
+      color: #eee;
+    }
+    #shop-panel h2 {
+      color: #ffe066; text-align: center; margin-bottom: 16px; font-size: 18px;
+    }
+    .shop-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+    .shop-tab {
+      flex: 1; padding: 7px; border-radius: 10px; text-align: center;
+      cursor: pointer; font-size: 12px; font-weight: 700;
+      background: rgba(255,255,255,.08); color: #aaa;
+      transition: background .15s, color .15s;
+    }
+    .shop-tab.active { background: rgba(78,205,196,.25); color: #4ecdc4; }
+    .shop-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 12px; border-radius: 10px;
+      background: rgba(255,255,255,.05); margin-bottom: 8px;
+    }
+    .shop-item-info { font-size: 13px; }
+    .shop-item-info .item-name { font-weight: 700; }
+    .shop-item-info .item-desc { color: #888; font-size: 11px; }
+    .shop-item-price { color: #ffe066; font-weight: 800; font-size: 14px; }
+    .shop-btn-buy, .shop-btn-sell {
+      padding: 6px 14px; border-radius: 8px; cursor: pointer;
+      font-size: 12px; font-weight: 700; border: none;
+      margin-left: 8px;
+    }
+    .shop-btn-buy { background: #4ecdc4; color: #000; }
+    .shop-btn-sell { background: #f7971e; color: #000; }
+    .shop-btn-buy:active, .shop-btn-sell:active { opacity: .8; }
+    #shop-money { text-align: center; color: #ffe066; font-size: 13px; margin-bottom: 12px; }
+    #shop-close {
+      display: block; width: 100%; padding: 10px;
+      background: rgba(255,255,255,.08); border: none;
+      border-radius: 10px; color: #aaa; font-size: 13px;
+      cursor: pointer; margin-top: 10px;
+    }
+
+    /* ── Loading Screen ─────────────────────────── */
+    #loading-screen {
+      position: fixed; inset: 0; z-index: 100;
+      background: linear-gradient(135deg, #1a0a2e, #0a2040);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; color: #fff;
+    }
+    #loading-screen h1 { font-size: 32px; color: #4ecdc4; margin-bottom: 8px; }
+    #loading-screen p { color: #888; font-size: 14px; }
+    #loading-bar-wrap {
+      width: 200px; height: 6px; background: rgba(255,255,255,.1);
+      border-radius: 3px; margin-top: 20px; overflow: hidden;
+    }
+    #loading-bar { height: 100%; background: #4ecdc4; width: 0%; transition: width .3s; }
+
+    /* ── Notification Toast ─────────────────────── */
+    #toast {
+      position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,.8); color: #fff; padding: 8px 18px;
+      border-radius: 20px; font-size: 13px; font-weight: 600;
+      z-index: 50; opacity: 0; transition: opacity .3s;
+      pointer-events: none; border: 1px solid rgba(255,255,255,.15);
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <!-- Loading -->
+  <div id="loading-screen">
+    <h1>🌴 Lagoon Valley</h1>
+    <p>Loading your tropical paradise...</p>
+    <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
+  </div>
+
+  <!-- Canvas -->
+  <div id="canvas-container"></div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div>
+      <div id="hud-day">Day 1</div>
+      <div id="hud-time">06:00</div>
+    </div>
+    <div id="hud-money">💰 100g</div>
+  </div>
+  <div id="tide-indicator">🌊 Low Tide</div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- Shop Button -->
+  <div id="shop-btn">🛒 Shop</div>
+
+  <!-- Inventory Bar -->
+  <div id="inventory-bar"></div>
+
+  <!-- Joystick -->
+  <div id="joystick-zone">
+    <div id="joystick-base"></div>
+    <div id="joystick-stick"></div>
+  </div>
+
+  <!-- Action Button -->
+  <div id="action-label">Interact</div>
+  <div id="action-btn">⚡</div>
+
+  <!-- Dialogue Box -->
+  <div id="dialogue-box">
+    <div class="npc-name" id="npc-name">Mira</div>
+    <div class="dialogue-text" id="dialogue-text"></div>
+    <div class="dialogue-close" id="dialogue-close">[ Tap to continue ]</div>
+  </div>
+
+  <!-- Shop Modal -->
+  <div id="shop-modal">
+    <div id="shop-panel">
+      <h2>🏪 Lagoon Market</h2>
+      <div id="shop-money">💰 100g</div>
+      <div class="shop-tabs">
+        <div class="shop-tab active" data-tab="buy">Buy Seeds</div>
+        <div class="shop-tab" data-tab="sell">Sell Crops</div>
+      </div>
+      <div id="shop-items"></div>
+      <button id="shop-close">Close Shop</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
