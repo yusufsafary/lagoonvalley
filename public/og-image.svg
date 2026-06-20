@@ -1,118 +1,138 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
   <defs>
-    <linearGradient id="og-bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0d0620"/>
-      <stop offset="50%" stop-color="#0a2040"/>
-      <stop offset="100%" stop-color="#0d3a50"/>
+    <radialGradient id="ogbg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#0d2a50"/>
+      <stop offset="60%" stop-color="#081428"/>
+      <stop offset="100%" stop-color="#030810"/>
+    </radialGradient>
+    <linearGradient id="ogwater" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4ecdc4" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0e4a44"/>
     </linearGradient>
-    <linearGradient id="og-water" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#4ecdc4" stop-opacity="0.75"/>
-      <stop offset="100%" stop-color="#1a6e66"/>
+    <linearGradient id="ogtextL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#80fff5"/>
+      <stop offset="100%" stop-color="#4ecdc4"/>
     </linearGradient>
-    <filter id="og-blur">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
+    <linearGradient id="ogtextV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe88a"/>
+      <stop offset="100%" stop-color="#f7971e"/>
+    </linearGradient>
+    <filter id="ogg">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="og-glow">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="b"/>
+    <filter id="ogs">
+      <feGaussianBlur stdDeviation="5" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="1200" height="630" fill="url(#og-bg)"/>
+  <rect width="1200" height="630" fill="url(#ogbg)"/>
 
   <!-- Stars -->
-  <circle cx="80" cy="60" r="2" fill="#ffe066" opacity="0.8"/>
-  <circle cx="150" cy="40" r="1.5" fill="#fff" opacity="0.6"/>
-  <circle cx="250" cy="80" r="2" fill="#fff" opacity="0.5"/>
-  <circle cx="380" cy="50" r="1.5" fill="#ffe066" opacity="0.7"/>
-  <circle cx="480" cy="30" r="2" fill="#fff" opacity="0.6"/>
-  <circle cx="580" cy="55" r="1.5" fill="#ffe066" opacity="0.5"/>
-  <circle cx="700" cy="38" r="1.5" fill="#fff" opacity="0.6"/>
-  <circle cx="820" cy="22" r="2" fill="#ffe066" opacity="0.7"/>
-  <circle cx="950" cy="50" r="1.5" fill="#ffe066" opacity="0.8"/>
-  <circle cx="1050" cy="30" r="2" fill="#fff" opacity="0.6"/>
-  <circle cx="1120" cy="68" r="1.5" fill="#fff" opacity="0.7"/>
-  <circle cx="1160" cy="44" r="2" fill="#ffe066" opacity="0.5"/>
+  <circle cx="80" cy="50" r="2.5" fill="#ffe066" opacity="0.85"/>
+  <circle cx="200" cy="35" r="2" fill="#fff" opacity="0.7"/>
+  <circle cx="380" cy="62" r="2.5" fill="#ffe066" opacity="0.8"/>
+  <circle cx="520" cy="28" r="2" fill="#fff" opacity="0.65"/>
+  <circle cx="660" cy="48" r="2" fill="#ffe066" opacity="0.6"/>
+  <circle cx="780" cy="22" r="2.5" fill="#fff" opacity="0.7"/>
+  <circle cx="920" cy="55" r="2" fill="#ffe066" opacity="0.75"/>
+  <circle cx="1060" cy="30" r="2.5" fill="#fff" opacity="0.65"/>
+  <circle cx="1150" cy="58" r="2" fill="#ffe066" opacity="0.55"/>
+  <circle cx="140" cy="95" r="1.5" fill="#fff" opacity="0.5"/>
+  <circle cx="860" cy="88" r="1.5" fill="#fff" opacity="0.5"/>
 
   <!-- Moon glow -->
-  <circle cx="210" cy="118" r="72" fill="#fff8d6" opacity="0.12" filter="url(#og-blur)"/>
-  <circle cx="210" cy="118" r="54" fill="#fff8d6" opacity="0.95"/>
-  <circle cx="230" cy="103" r="44" fill="#0a1828"/>
+  <circle cx="215" cy="118" r="88" fill="#fff8d6" opacity="0.1" filter="url(#ogs)"/>
+  <!-- Moon -->
+  <circle cx="215" cy="118" r="66" fill="#fff8d6" opacity="0.96"/>
+  <circle cx="240" cy="98" r="54" fill="#081428"/>
 
-  <!-- Distant mountains -->
-  <polygon points="0,430 110,188 220,430" fill="#162038" opacity="0.85"/>
-  <polygon points="175,430 330,155 485,430" fill="#1a2a48"/>
-  <polygon points="380,430 545,172 710,430" fill="#162038" opacity="0.85"/>
-  <polygon points="640,430 800,192 960,430" fill="#1a2a48"/>
-  <polygon points="900,430 1040,210 1180,430" fill="#162038" opacity="0.9"/>
-  <polygon points="1060,430 1140,250 1200,360 1200,430" fill="#1a2a48"/>
+  <!-- Mountains -->
+  <polygon points="0,440 120,192 240,440" fill="#152238" opacity="0.9"/>
+  <polygon points="180,440 340,155 500,440" fill="#1a2d48"/>
+  <polygon points="400,440 565,172 730,440" fill="#152238" opacity="0.85"/>
+  <polygon points="660,440 820,188 980,440" fill="#1a2d48"/>
+  <polygon points="920,440 1060,205 1200,365 1200,440" fill="#152238" opacity="0.9"/>
+
+  <!-- Snow caps -->
+  <polygon points="110,210 120,192 130,210" fill="rgba(255,255,255,0.15)"/>
+  <polygon points="330,172 340,155 350,172" fill="rgba(255,255,255,0.12)"/>
+  <polygon points="555,190 565,172 575,190" fill="rgba(255,255,255,0.14)"/>
+  <polygon points="810,205 820,188 830,205" fill="rgba(255,255,255,0.12)"/>
 
   <!-- Shore -->
-  <path d="M0,428 Q200,410 400,418 Q600,426 800,412 Q1000,398 1200,408 L1200,455 L0,455 Z" fill="#243a12"/>
+  <path d="M0,436 Q200,418 400,426 Q600,434 800,418 Q1000,402 1200,414 L1200,462 L0,462 Z" fill="#243a12"/>
 
   <!-- Water -->
-  <rect x="0" y="455" width="1200" height="175" fill="url(#og-water)"/>
-  <path d="M0,470 Q100,462 200,470 Q300,478 400,470 Q500,462 600,470 Q700,478 800,470 Q900,462 1000,470 Q1100,478 1200,470" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
-  <path d="M0,496 Q150,488 300,496 Q450,504 600,496 Q750,488 900,496 Q1050,504 1200,496" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
-  <path d="M0,522 Q200,514 400,522 Q600,530 800,522 Q1000,514 1200,522" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
-  <!-- Water shimmer -->
-  <ellipse cx="600" cy="494" rx="300" ry="20" fill="rgba(255,224,102,0.06)"/>
+  <rect x="0" y="462" width="1200" height="168" fill="url(#ogwater)"/>
+  <path d="M0,480 Q100,471 200,480 Q300,489 400,480 Q500,471 600,480 Q700,489 800,480 Q900,471 1000,480 Q1100,489 1200,480" fill="none" stroke="rgba(255,255,255,0.32)" stroke-width="2.5"/>
+  <path d="M0,510 Q150,501 300,510 Q450,519 600,510 Q750,501 900,510 Q1050,519 1200,510" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+  <path d="M0,540 Q200,531 400,540 Q600,549 800,540 Q1000,531 1200,540" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+  <!-- Shimmer on water -->
+  <ellipse cx="600" cy="498" rx="350" ry="24" fill="rgba(255,224,102,0.06)"/>
 
-  <!-- Palm tree (right) -->
-  <path d="M1040,455 Q1032,392 1024,330 Q1016,268 1020,218" stroke="#7a4a20" stroke-width="10" fill="none" stroke-linecap="round"/>
-  <path d="M1020,218 Q976,170 924,188" stroke="#2e7a18" stroke-width="7.5" fill="none" stroke-linecap="round"/>
-  <path d="M1020,218 Q1007,164 1025,140" stroke="#38902a" stroke-width="7.5" fill="none" stroke-linecap="round"/>
-  <path d="M1020,218 Q1046,170 1086,180" stroke="#2e7a18" stroke-width="7.5" fill="none" stroke-linecap="round"/>
-  <path d="M1020,218 Q1056,210 1096,230" stroke="#38902a" stroke-width="6.5" fill="none" stroke-linecap="round"/>
-  <path d="M1020,218 Q992,240 966,256" stroke="#2e7a18" stroke-width="6.5" fill="none" stroke-linecap="round"/>
-  <circle cx="1016" cy="230" r="8.5" fill="#6b3a1f"/>
-  <circle cx="1028" cy="223" r="7" fill="#7a4522"/>
+  <!-- Hut left -->
+  <rect x="30" y="375" width="155" height="84" rx="8" fill="#7a4a18"/>
+  <polygon points="14,379 202,379 108,308" fill="#5c3210"/>
+  <rect x="78" y="412" width="54" height="47" fill="#4a2808"/>
+  <rect x="38" y="388" width="40" height="28" rx="4" fill="#ffe8a0" opacity="0.65"/>
+  <rect x="126" y="388" width="40" height="28" rx="4" fill="#ffe8a0" opacity="0.65"/>
+  <!-- Dock -->
+  <rect x="80" y="459" width="50" height="14" fill="#8a6030"/>
+  <rect x="74" y="462" width="11" height="80" fill="#7a5020"/>
+  <rect x="117" y="462" width="11" height="80" fill="#7a5020"/>
+  <rect x="74" y="505" width="54" height="8" fill="#8a6030"/>
+  <!-- Torch glow -->
+  <circle cx="68" cy="463" r="9" fill="#ff9944" opacity="0.8" filter="url(#ogs)"/>
+  <circle cx="134" cy="457" r="9" fill="#ff9944" opacity="0.8" filter="url(#ogs)"/>
 
-  <!-- Crop plots (bottom left) -->
-  <rect x="62" y="430" width="55" height="24" rx="4" fill="#1c3a0c"/>
-  <rect x="126" y="430" width="55" height="24" rx="4" fill="#1c3a0c"/>
-  <rect x="190" y="430" width="55" height="24" rx="4" fill="#1c3a0c"/>
-  <line x1="62" y1="442" x2="117" y2="442" stroke="#5aaa2a" stroke-width="1.8" opacity="0.7"/>
-  <line x1="126" y1="442" x2="181" y2="442" stroke="#5aaa2a" stroke-width="1.8" opacity="0.7"/>
-  <line x1="190" y1="442" x2="245" y2="442" stroke="#5aaa2a" stroke-width="1.8" opacity="0.7"/>
+  <!-- Palm right large -->
+  <path d="M1060,462 Q1044,382 1030,302 Q1016,222 1022,170" stroke="#7a5020" stroke-width="20" fill="none" stroke-linecap="round"/>
+  <path d="M1022,170 Q968,120 906,140" stroke="#2e7a18" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M1022,170 Q1008,108 1024,78" stroke="#38902a" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M1022,170 Q1072,124 1114,138" stroke="#2e7a18" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M1022,170 Q1076,162 1118,188" stroke="#38902a" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M1022,170 Q990,200 960,220" stroke="#2e7a18" stroke-width="11" fill="none" stroke-linecap="round"/>
+  <circle cx="1016" cy="192" r="18" fill="#6b3a1f"/>
+  <circle cx="1034" cy="180" r="15" fill="#7a4522"/>
 
-  <!-- Text glow blob -->
-  <ellipse cx="530" cy="260" rx="380" ry="150" fill="rgba(78,205,196,0.04)" filter="url(#og-blur)"/>
+  <!-- Leaf clusters bottom corners -->
+  <ellipse cx="60" cy="458" rx="80" ry="28" fill="#1a3a08" opacity="0.8"/>
+  <ellipse cx="120" cy="446" rx="65" ry="22" fill="#2a5a12" opacity="0.7"/>
+  <ellipse cx="1155" cy="452" rx="72" ry="26" fill="#1a3a08" opacity="0.8"/>
+  <ellipse cx="1085" cy="442" rx="55" ry="20" fill="#2a5a12" opacity="0.7"/>
 
-  <!-- Title: LAGOON -->
-  <text x="100" y="260"
-    font-family="'Segoe UI', Arial, system-ui, sans-serif"
-    font-size="112" font-weight="900" letter-spacing="6"
-    fill="#ffe066" filter="url(#og-glow)" opacity="0.2">LAGOON</text>
-  <text x="100" y="260"
-    font-family="'Segoe UI', Arial, system-ui, sans-serif"
-    font-size="112" font-weight="900" letter-spacing="6"
-    fill="#ffe066">LAGOON</text>
+  <!-- Lantern right pillar -->
+  <rect x="978" y="430" width="14" height="28" rx="3" fill="#8a6030"/>
+  <rect x="973" y="414" width="24" height="22" rx="5" fill="#c08020" opacity="0.9"/>
+  <circle cx="985" cy="425" r="10" fill="#ffe066" opacity="0.85" filter="url(#ogs)"/>
 
-  <!-- Title: VALLEY -->
-  <text x="100" y="378"
-    font-family="'Segoe UI', Arial, system-ui, sans-serif"
-    font-size="112" font-weight="900" letter-spacing="6"
-    fill="#4ecdc4" filter="url(#og-glow)" opacity="0.2">VALLEY</text>
-  <text x="100" y="378"
-    font-family="'Segoe UI', Arial, system-ui, sans-serif"
-    font-size="112" font-weight="900" letter-spacing="6"
-    fill="#4ecdc4">VALLEY</text>
+  <!-- TITLE: LAGOON -->
+  <text x="108" y="275"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-size="138" font-weight="900" letter-spacing="8"
+    fill="url(#ogtextL)" filter="url(#ogg)">LAGOON</text>
+
+  <!-- TITLE: VALLEY -->
+  <text x="108" y="402"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-size="138" font-weight="900" letter-spacing="8"
+    fill="url(#ogtextV)" filter="url(#ogg)">VALLEY</text>
 
   <!-- Tagline -->
-  <text x="100" y="420"
-    font-family="'Segoe UI', Arial, system-ui, sans-serif"
-    font-size="26" font-weight="400" letter-spacing="3"
-    fill="rgba(210,235,255,0.65)">A mobile farming game where the tide sets the rules</text>
+  <text x="108" y="445"
+    font-family="'Segoe UI', Arial, sans-serif"
+    font-size="26" letter-spacing="3"
+    fill="rgba(200,235,255,0.62)">A mobile farming game where the tide sets the rules</text>
 
   <!-- Accent dots -->
-  <circle cx="100" cy="296" r="4" fill="#ffe066" opacity="0.6"/>
-  <circle cx="116" cy="296" r="4" fill="#4ecdc4" opacity="0.6"/>
-  <circle cx="132" cy="296" r="4" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="108" cy="306" r="5" fill="#ffe066" opacity="0.7"/>
+  <circle cx="126" cy="306" r="5" fill="#4ecdc4" opacity="0.7"/>
+  <circle cx="144" cy="306" r="5" fill="rgba(255,255,255,0.3)"/>
 
   <!-- Domain -->
-  <text x="1164" y="602" text-anchor="end"
-    font-family="'Segoe UI', Arial, system-ui, sans-serif"
-    font-size="20" fill="rgba(255,255,255,0.28)" letter-spacing="1">lagoonvalley.xyz</text>
+  <text x="1178" y="610" text-anchor="end"
+    font-family="'Segoe UI', Arial, sans-serif"
+    font-size="22" fill="rgba(255,255,255,0.3)" letter-spacing="1">lagoonvalley.xyz</text>
 </svg>

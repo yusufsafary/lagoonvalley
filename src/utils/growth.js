@@ -13,19 +13,20 @@ export function tickCrop(plot, deltaMinutes) {
   const cropDef = CROPS[plot.cropType];
   if (!cropDef) return plot;
 
-  // Growth only progresses when watered
-  const growthRate = plot.watered ? 1.0 : 0.0;
+  const growthRate    = plot.watered ? 1.0 : 0.0;
   const minutesPerStage = cropDef.growTime / 4;
 
   const newProgress = (plot.growthProgress || 0) + deltaMinutes * growthRate;
-  const newStage = Math.min(4, Math.floor(newProgress / minutesPerStage));
+  const newStage    = Math.min(4, Math.floor(newProgress / minutesPerStage));
+
+  // Water depletes gradually — every full in-game hour
+  const waterDepleted = plot.watered && (newProgress % 60 < deltaMinutes);
 
   return {
     ...plot,
     growthProgress: newProgress,
-    growthStage: newStage,
-    // Water depletes over time
-    watered: plot.watered && newProgress % 60 < deltaMinutes ? false : plot.watered,
+    growthStage:    newStage,
+    watered:        plot.watered && !waterDepleted,
   };
 }
 
@@ -37,4 +38,17 @@ export function isReadyToHarvest(plot) {
 /** Returns true if a plot needs water */
 export function needsWater(plot) {
   return plot.tilled && plot.cropType && !plot.watered && plot.growthStage < 4;
+}
+
+/**
+ * Compute how much bonus yield a plot gets based on its zone.
+ * Coastal plots (high z) get a tide bonus when tide is LOW.
+ */
+export function harvestYield(plot, tideLevel) {
+  let qty = 1;
+  // Coastal bonus: extra yield when tide is below 0.35
+  if (plot.z > 4 && tideLevel < 0.35) qty = 2;
+  // Inland bonus: consistent yield regardless of tide
+  if (plot.z < -2) qty = 1;
+  return qty;
 }
