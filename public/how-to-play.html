@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>How to Play - Lagoon Valley</title>
+  <meta name="description" content="Learn how to farm, read the tides, trade at the market, and settle into the valley. A complete guide for new players."/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <meta property="og:title" content="How to Play - Lagoon Valley"/>
+  <meta property="og:description" content="A complete guide to farming, tides, and trading in Lagoon Valley."/>
+  <meta property="og:image" content="https://lagoonvalley.xyz/og-image.svg"/>
+  <meta property="og:url" content="https://lagoonvalley.xyz/how-to-play.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d0620;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --teal: #4ecdc4;
+      --gold: #ffe066;
+      --text: #ddeeff;
+      --muted: #7799bb;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(13,6,32,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .nav-logo img { width: 38px; height: 38px; }
+    .nav-logo span { font-weight: 800; font-size: 17px; letter-spacing: 0.5px; }
+    .nav-links {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.3px;
+      padding: 6px 12px; border-radius: 8px;
+      transition: color .15s, background .15s;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a.active { color: var(--teal); }
+    .nav-cta {
+      background: linear-gradient(135deg, #4ecdc4, #38a09a) !important;
+      color: #000 !important; font-weight: 800 !important;
+      padding: 7px 18px !important; border-radius: 20px !important;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 70px 28px 50px;
+      max-width: 760px; margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(78,205,196,0.12); border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 20px; padding: 5px 14px; margin-bottom: 22px;
+      font-size: 12px; font-weight: 700; color: var(--teal); letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5.5vw, 52px);
+      font-weight: 900; line-height: 1.2; margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--teal); }
+    .hero p { color: var(--muted); font-size: 17px; line-height: 1.85; max-width: 600px; }
+
+    /* ── Table of contents ── */
+    .toc {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 24px;
+      margin: 40px 28px;
+      max-width: 760px; margin-left: auto; margin-right: auto;
+    }
+    .toc h3 { font-size: 13px; font-weight: 800; color: var(--muted); margin-bottom: 12px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--teal); text-decoration: none; font-size: 14px; font-weight: 600; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* ── Sections ── */
+    .section {
+      max-width: 760px; margin: 0 auto;
+      padding: 48px 28px;
+      border-top: 1px solid var(--border);
+    }
+    .section-num {
+      font-size: 11px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .section h2 {
+      font-size: clamp(22px, 3.5vw, 32px); font-weight: 900;
+      margin-bottom: 18px; line-height: 1.25;
+    }
+    .section h2 .accent { color: var(--teal); }
+    .section p {
+      color: var(--muted); font-size: 15px; line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .section p:last-child { margin-bottom: 0; }
+    .section h3 {
+      font-size: 16px; font-weight: 800; color: var(--text);
+      margin: 28px 0 10px;
+    }
+
+    /* ── Control diagram ── */
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px; margin: 24px 0;
+    }
+    .control-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .control-icon {
+      font-size: 24px; flex-shrink: 0;
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.06); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .control-info { flex: 1; }
+    .control-name { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
+    .control-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── Step list (farming cycle) ── */
+    .step-list { margin: 24px 0; display: flex; flex-direction: column; gap: 12px; }
+    .step {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 18px;
+    }
+    .step-num {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: rgba(78,205,196,0.15); border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 900; color: var(--teal);
+    }
+    .step-body { flex: 1; }
+    .step-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ── Callout boxes ── */
+    .callout {
+      border-radius: 14px; padding: 22px 22px;
+      margin: 24px 0;
+    }
+    .callout.teal {
+      background: rgba(78,205,196,0.07);
+      border: 1px solid rgba(78,205,196,0.22);
+    }
+    .callout.gold {
+      background: rgba(255,224,102,0.06);
+      border: 1px solid rgba(255,224,102,0.22);
+    }
+    .callout .callout-label {
+      font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .callout.teal .callout-label { color: var(--teal); }
+    .callout.gold .callout-label { color: var(--gold); }
+    .callout p { color: var(--muted); font-size: 14px; line-height: 1.8; margin: 0; }
+
+    /* ── Tips list ── */
+    .tips { margin: 20px 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .tips li {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 16px;
+      font-size: 13px; color: var(--muted); line-height: 1.6;
+      display: flex; gap: 10px; align-items: baseline;
+    }
+    .tips li::before {
+      content: "→"; color: var(--teal); font-weight: 800; flex-shrink: 0;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      max-width: 760px; margin: 0 auto;
+      padding: 60px 28px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .cta-section h2 { font-size: clamp(24px, 4vw, 36px); font-weight: 900; margin-bottom: 14px; }
+    .cta-section p { color: var(--muted); font-size: 16px; margin-bottom: 28px; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #4ecdc4, #38a09a);
+      color: #000; font-weight: 800; font-size: 16px;
+      padding: 14px 32px; border-radius: 28px;
+      text-decoration: none; transition: opacity .15s, transform .15s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 28px; text-align: center;
+      color: var(--muted); font-size: 13px;
+    }
+    .footer a { color: var(--teal); text-decoration: none; }
+    .footer-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+
+    @media (max-width: 600px) {
+      .nav { padding: 12px 16px; }
+      .nav-logo span { display: none; }
+      .hero { padding: 44px 16px 36px; }
+      .section { padding: 36px 16px; }
+      .toc { margin: 28px 16px; }
+      .cta-section { padding: 44px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <img src="/logo.svg" alt="Lagoon Valley"/>
+      <span>Lagoon Valley</span>
+    </a>
+    <div class="nav-links">
+      <a href="/about.html">About</a>
+      <a href="/how-to-play.html" class="active">How to Play</a>
+      <a href="/changelog.html">Updates</a>
+      <a href="/" class="nav-cta">Play Now</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">🎮 Beginner Guide</div>
+    <h1>Getting started in <span>Lagoon Valley</span></h1>
+    <p>Everything you need to know to get your first harvest, survive the tides, and build up a steady income at the Lagoon Market.</p>
+  </div>
+
+  <div class="toc">
+    <h3>In this guide</h3>
+    <ol>
+      <li><a href="#controls">Getting around</a></li>
+      <li><a href="#farming">Working the land</a></li>
+      <li><a href="#tides">Watching the tide</a></li>
+      <li><a href="#market">The Lagoon Market</a></li>
+      <li><a href="#npcs">Meeting the locals</a></li>
+      <li><a href="#tips">Tips for new farmers</a></li>
+    </ol>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="section" id="controls">
+    <div class="section-num">Section 01</div>
+    <h2>Getting <span class="accent">around</span></h2>
+    <p>Lagoon Valley uses on-screen touch controls designed for phones. Everything you need is within thumb reach.</p>
+
+    <div class="control-grid">
+      <div class="control-item">
+        <div class="control-icon">🕹</div>
+        <div class="control-info">
+          <div class="control-name">Virtual Joystick</div>
+          <div class="control-desc">Bottom left. Drag in any direction to move your character through the valley.</div>
+        </div>
+      </div>
+      <div class="control-item">
+        <div class="control-icon">⚡</div>
+        <div class="control-info">
+          <div class="control-name">Action Button</div>
+          <div class="control-desc">Bottom right. Does everything: till soil, plant, water, harvest, and talk to NPCs.</div>
+        </div>
+      </div>
+      <div class="control-item">
+        <div class="control-icon">🎒</div>
+        <div class="control-info">
+          <div class="control-name">Inventory Bar</div>
+          <div class="control-desc">Bottom center. Tap a slot to select which seed you want to plant next.</div>
+        </div>
+      </div>
+      <div class="control-item">
+        <div class="control-icon">🛒</div>
+        <div class="control-info">
+          <div class="control-name">Shop Button</div>
+          <div class="control-desc">Top right. Opens the Lagoon Market where you buy seeds and sell crops.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout teal">
+      <div class="callout-label">Tip</div>
+      <p>The camera follows your character automatically. You do not need to worry about rotating the view. Just move and the world turns with you.</p>
+    </div>
+  </div>
+
+  <!-- FARMING -->
+  <div class="section" id="farming">
+    <div class="section-num">Section 02</div>
+    <h2>Working <span class="accent">the land</span></h2>
+    <p>Every crop goes through four stages before it is ready to harvest. You trigger each stage by pressing the action button while standing next to a farm plot.</p>
+
+    <div class="step-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Till the soil</div>
+          <div class="step-desc">Walk up to a brown farm plot and press the action button. The ground turns dark and is now ready for planting. You cannot plant on untilled soil.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Plant a seed</div>
+          <div class="step-desc">Select a seed from your inventory bar at the bottom of the screen, then press the action button while standing on a tilled plot. The seed goes in the ground.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Water it</div>
+          <div class="step-desc">Plants only grow after being watered. Walk back to your planted plot and press the action button to water. An unwatered seed sits at stage one indefinitely.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Harvest when ready</div>
+          <div class="step-desc">When a plant reaches stage four of growth, it is fully ripe. Press the action button to harvest and add it to your inventory. Then sell it at the market.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Crops you can grow</h3>
+    <p>Six varieties are available in the game, each with a different grow time and sell price. Start with carrots and tomatoes since they grow quickly. Pumpkins and watermelons take longer but pay more.</p>
+
+    <div class="callout gold">
+      <div class="callout-label">Important</div>
+      <p>If you till a plot and leave it unplanted for too long, the soil dries out and you will need to till it again before planting. Tend to your plots regularly.</p>
+    </div>
+  </div>
+
+  <!-- TIDES -->
+  <div class="section" id="tides">
+    <div class="section-num">Section 03</div>
+    <h2>Watching <span class="accent">the tide</span></h2>
+    <p>The tide is one of the most important things to pay attention to in Lagoon Valley. The coastal farmland floods when the tide rises, making those plots unreachable until it drops again.</p>
+    <p>The tide indicator at the top of your screen shows whether you are in a low tide or high tide window. Low tide is the safe time to work the water-side plots. When high tide comes in, those plots are underwater and you cannot interact with them.</p>
+
+    <div class="callout teal">
+      <div class="callout-label">The payoff</div>
+      <p>Coastal plots sit on rich soil close to the lagoon. Crops grown there tend to yield more at harvest. The risk of tidal flooding is the trade-off. Once you get a feel for the tide cycle, the coastal land becomes some of the most profitable in the valley.</p>
+    </div>
+
+    <p>A good habit is to check the tide indicator before planning a farming session. If high tide is coming soon, prioritize harvesting anything that is ready rather than starting new plots that might flood before they grow.</p>
+  </div>
+
+  <!-- MARKET -->
+  <div class="section" id="market">
+    <div class="section-num">Section 04</div>
+    <h2>The <span class="accent">Lagoon Market</span></h2>
+    <p>The shop button in the top right opens the Lagoon Market. It has two sections.</p>
+
+    <h3>Buy Seeds</h3>
+    <p>The Buy tab lists all the seed varieties available. Each seed shows its price in gold (g) and a short description. Your current gold balance is shown at the top of the shop panel. Buy seeds before heading out to your plots.</p>
+
+    <h3>Sell Crops</h3>
+    <p>The Sell tab lists everything in your harvest inventory. Tap the sell button next to any crop to convert it to gold. Sell regularly so you always have funds for new seeds.</p>
+
+    <div class="callout gold">
+      <div class="callout-label">Gold management</div>
+      <p>You start with 100 gold. Seeds are cheap but premium varieties cost more. Do not spend all your gold on seeds at once. Keep enough in reserve to resupply if a harvest disappoints.</p>
+    </div>
+  </div>
+
+  <!-- NPCS -->
+  <div class="section" id="npcs">
+    <div class="section-num">Section 05</div>
+    <h2>Meeting <span class="accent">the locals</span></h2>
+    <p>The valley is not empty. Mira is a local who wanders through the farmland, and she has been living alongside the lagoon long enough to know it well.</p>
+    <p>Walk up close to her and press the action button to start a conversation. She often comments on the tides, the season, or what is growing well. It is worth stopping to listen, especially when you are getting started and the rhythm of the land is still new to you.</p>
+
+    <div class="callout teal">
+      <div class="callout-label">More locals coming</div>
+      <p>Mira is the first resident of the valley. More characters are planned for future updates, each with their own knowledge of a different part of the land.</p>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="section" id="tips">
+    <div class="section-num">Section 06</div>
+    <h2>Tips for <span class="accent">new farmers</span></h2>
+    <p>A few things that are worth knowing before you spend your first 100 gold.</p>
+
+    <ul class="tips">
+      <li>Water your crops every time you pass by a plot. Consistent watering grows crops faster than watering once and walking away.</li>
+      <li>Harvest anything that is fully grown before you focus on planting new seeds. A ripe crop sitting in the ground is just sitting there.</li>
+      <li>Coastal plots near the water offer higher yields. They are worth working once you understand when the tide drops and for how long.</li>
+      <li>Keep a mix of fast-growing and slow-growing crops. Fast ones like carrot keep cash coming in while the pumpkins and watermelons take their time.</li>
+      <li>If the tide catches you mid-farming session, step back to the inland plots. You will not lose anything that has already been planted.</li>
+      <li>Talk to Mira when she is nearby. The things she says are not just flavor text.</li>
+      <li>Till one plot at a time when starting out. Tilling five plots and only having seeds for two is a common early mistake.</li>
+    </ul>
+  </div>
+
+  <div class="cta-section">
+    <h2>Ready to farm?</h2>
+    <p>The valley is waiting. Pick up where you left off or start fresh with a new plot by the water.</p>
+    <a href="/" class="btn-primary">Play Lagoon Valley</a>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="/">Play</a>
+      <a href="/about.html">About</a>
+      <a href="/changelog.html">Updates</a>
+      <a href="https://github.com/yusufsafary/lagoonvalley" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p>Lagoon Valley &copy; 2025. Open source, made with care.</p>
+  </footer>
+
+</body>
+</html>
