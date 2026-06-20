@@ -24,7 +24,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
@@ -33,16 +32,8 @@
       touch-action: none;
       -webkit-tap-highlight-color: transparent;
     }
-    #canvas-container {
-      position: fixed; inset: 0;
-      width: 100%; height: 100%;
-    }
-    canvas {
-      display: block;
-      width: 100% !important;
-      height: 100% !important;
-      touch-action: none;
-    }
+    #canvas-container { position: fixed; inset: 0; width: 100%; height: 100%; }
+    canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
 
     /* ── HUD ─────────────────────────────────────── */
     #hud {
@@ -94,6 +85,24 @@
       text-transform: uppercase;
     }
 
+    /* ── Mini-map ────────────────────────────────── */
+    #minimap-wrap {
+      position: fixed; top: 72px; left: 16px;
+      z-index: 10; pointer-events: none;
+    }
+    #minimap {
+      width: 108px; height: 108px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(78,205,196,.35);
+      box-shadow: 0 4px 18px rgba(0,0,0,.45), 0 0 0 1px rgba(78,205,196,.08);
+      display: block;
+    }
+    #minimap-label {
+      text-align: center; font-size: 8px; font-weight: 800;
+      color: rgba(78,205,196,.55); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-top: 4px;
+    }
+
     /* ── Inventory Bar ───────────────────────────── */
     #inventory-bar {
       position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
@@ -103,10 +112,7 @@
       background: rgba(5,10,20,.65);
       border: 1.5px solid rgba(255,255,255,.1);
       border-radius: 20px; padding: 8px 10px;
-      box-shadow:
-        0 12px 40px rgba(0,0,0,.55),
-        0 1px 0 rgba(255,255,255,.06) inset,
-        0 0 0 1px rgba(255,255,255,.03);
+      box-shadow: 0 12px 40px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.06) inset;
       z-index: 10;
       max-width: calc(100vw - 28px);
       overflow-x: auto;
@@ -120,8 +126,7 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; color: #fff;
       transition: border-color .2s, background .2s, transform .12s, box-shadow .2s;
-      user-select: none; position: relative;
-      gap: 1px;
+      user-select: none; gap: 1px;
     }
     .inv-slot:active { transform: scale(.90); }
     .inv-slot.selected {
@@ -141,11 +146,8 @@
       border-radius: 50%;
       border: 2.5px solid rgba(255,255,255,.32);
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 10;
-      font-size: 30px;
-      box-shadow:
-        0 6px 28px rgba(0,0,0,.5),
-        0 0 0 0 rgba(78,205,196,.45);
+      cursor: pointer; z-index: 10; font-size: 30px;
+      box-shadow: 0 6px 28px rgba(0,0,0,.5), 0 0 0 0 rgba(78,205,196,.45);
       transition: transform .12s;
       user-select: none;
       animation: actionPulse 2.6s ease-in-out infinite;
@@ -154,8 +156,7 @@
       0%,100% { box-shadow: 0 6px 28px rgba(0,0,0,.5), 0 0 0 0 rgba(78,205,196,.5); }
       55% { box-shadow: 0 6px 28px rgba(0,0,0,.5), 0 0 0 12px rgba(78,205,196,.0); }
     }
-    #action-btn:active { transform: scale(.86); animation: none;
-      box-shadow: 0 2px 12px rgba(0,0,0,.4); }
+    #action-btn:active { transform: scale(.86); animation: none; box-shadow: 0 2px 12px rgba(0,0,0,.4); }
     #action-label {
       position: fixed; bottom: 176px; right: 14px;
       color: rgba(255,255,255,.8); font-size: 10px; font-weight: 800;
@@ -176,8 +177,26 @@
       user-select: none; letter-spacing: 0.02em;
       transition: transform .12s, box-shadow .2s;
     }
-    #shop-btn:active { transform: scale(.90);
-      box-shadow: 0 2px 8px rgba(247,160,30,.25); }
+    #shop-btn:active { transform: scale(.90); }
+
+    /* ── Help Button ─────────────────────────────── */
+    #help-btn {
+      position: fixed; top: 16px; right: 90px;
+      width: 34px; height: 34px;
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,.2);
+      border-radius: 50%; cursor: pointer;
+      z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 900; color: rgba(255,255,255,.8);
+      box-shadow: 0 2px 12px rgba(0,0,0,.3);
+      transition: background .2s, transform .12s;
+      user-select: none;
+      text-decoration: none;
+    }
+    #help-btn:active { transform: scale(.90); background: rgba(78,205,196,.2); }
 
     /* ── Joystick ────────────────────────────────── */
     #joystick-zone {
@@ -188,44 +207,28 @@
     #joystick-base {
       position: absolute; inset: 0;
       background: radial-gradient(circle at center,
-        rgba(255,255,255,.07) 0%,
-        rgba(255,255,255,.03) 70%,
-        transparent 100%);
+        rgba(255,255,255,.07) 0%, rgba(255,255,255,.03) 70%, transparent 100%);
       border: 2px solid rgba(255,255,255,.18);
       border-radius: 50%;
-      box-shadow:
-        0 0 24px rgba(78,205,196,.1),
-        inset 0 1px 0 rgba(255,255,255,.08);
+      box-shadow: 0 0 24px rgba(78,205,196,.1), inset 0 1px 0 rgba(255,255,255,.08);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
     }
-    #joystick-base::before,
-    #joystick-base::after {
-      content: '';
-      position: absolute;
-      background: rgba(255,255,255,.07);
-      border-radius: 1px;
+    #joystick-base::before, #joystick-base::after {
+      content: ''; position: absolute; background: rgba(255,255,255,.07); border-radius: 1px;
     }
-    #joystick-base::before {
-      width: 1.5px; height: 50%; top: 25%; left: 50%; transform: translateX(-50%);
-    }
-    #joystick-base::after {
-      height: 1.5px; width: 50%; left: 25%; top: 50%; transform: translateY(-50%);
-    }
+    #joystick-base::before { width: 1.5px; height: 50%; top: 25%; left: 50%; transform: translateX(-50%); }
+    #joystick-base::after  { height: 1.5px; width: 50%; left: 25%; top: 50%; transform: translateY(-50%); }
     #joystick-stick {
       position: absolute;
       width: 48px; height: 48px;
       background: radial-gradient(circle at 38% 32%,
-        rgba(255,255,255,.75),
-        rgba(78,205,196,.8) 55%,
-        rgba(20,100,90,1));
+        rgba(255,255,255,.75), rgba(78,205,196,.8) 55%, rgba(20,100,90,1));
       border: 2px solid rgba(255,255,255,.5);
       border-radius: 50%;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      box-shadow:
-        0 5px 16px rgba(0,0,0,.45),
-        0 0 12px rgba(78,205,196,.35);
+      box-shadow: 0 5px 16px rgba(0,0,0,.45), 0 0 12px rgba(78,205,196,.35);
     }
 
     /* ── Dialogue Box ────────────────────────────── */
@@ -239,10 +242,7 @@
       border-radius: 22px; padding: 18px 22px;
       color: rgba(218,245,245,.92); font-size: 14px; line-height: 1.65;
       z-index: 20; display: none;
-      box-shadow:
-        0 12px 50px rgba(0,0,0,.75),
-        0 0 0 1px rgba(78,205,196,.08),
-        inset 0 1px 0 rgba(255,255,255,.06);
+      box-shadow: 0 12px 50px rgba(0,0,0,.75), 0 0 0 1px rgba(78,205,196,.08), inset 0 1px 0 rgba(255,255,255,.06);
     }
     .npc-name {
       font-weight: 900; color: #4ecdc4; margin-bottom: 8px; font-size: 11px;
@@ -250,20 +250,17 @@
       display: flex; align-items: center; gap: 7px;
     }
     .npc-name::before {
-      content: '';
-      width: 7px; height: 7px;
+      content: ''; width: 7px; height: 7px;
       background: #4ecdc4; border-radius: 50%;
       box-shadow: 0 0 8px rgba(78,205,196,.8);
-      animation: dotBlink 1.5s ease-in-out infinite;
-      flex-shrink: 0;
+      animation: dotBlink 1.5s ease-in-out infinite; flex-shrink: 0;
     }
     @keyframes dotBlink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
     #dialogue-text { color: rgba(215,242,242,.88); }
     #dialogue-close {
       margin-top: 14px; text-align: right;
       color: #4ecdc4; font-size: 11px; cursor: pointer; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.09em;
-      opacity: .75; transition: opacity .2s;
+      text-transform: uppercase; letter-spacing: 0.09em; opacity: .75;
     }
     #dialogue-close:active { opacity: 1; }
 
@@ -286,10 +283,7 @@
       width: min(400px, calc(100vw - 24px));
       max-height: 84vh; overflow-y: auto;
       color: #eee;
-      box-shadow:
-        0 28px 90px rgba(0,0,0,.75),
-        0 0 0 1px rgba(78,205,196,.06),
-        inset 0 1px 0 rgba(255,255,255,.05);
+      box-shadow: 0 28px 90px rgba(0,0,0,.75), 0 0 0 1px rgba(78,205,196,.06), inset 0 1px 0 rgba(255,255,255,.05);
     }
     #shop-panel::-webkit-scrollbar { width: 3px; }
     #shop-panel::-webkit-scrollbar-track { background: transparent; }
@@ -301,34 +295,28 @@
     #shop-money {
       text-align: center; color: #ffe066; font-size: 14px;
       margin-bottom: 18px; font-weight: 800;
-      background: rgba(255,224,102,.07);
-      border: 1px solid rgba(255,224,102,.14);
+      background: rgba(255,224,102,.07); border: 1px solid rgba(255,224,102,.14);
       border-radius: 14px; padding: 7px;
     }
     .shop-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
     .shop-tab {
       flex: 1; padding: 9px; border-radius: 14px; text-align: center;
       cursor: pointer; font-size: 11px; font-weight: 800;
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.45);
+      background: rgba(255,255,255,.05); color: rgba(255,255,255,.45);
       border: 1px solid rgba(255,255,255,.07);
-      transition: all .2s;
-      text-transform: uppercase; letter-spacing: 0.05em;
+      transition: all .2s; text-transform: uppercase; letter-spacing: 0.05em;
       font-family: inherit;
     }
     .shop-tab.active {
-      background: rgba(78,205,196,.16);
-      color: #4ecdc4;
+      background: rgba(78,205,196,.16); color: #4ecdc4;
       border-color: rgba(78,205,196,.3);
       box-shadow: 0 0 16px rgba(78,205,196,.15);
     }
     .shop-item {
       display: flex; justify-content: space-between; align-items: center;
       padding: 13px 15px; border-radius: 16px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.07);
-      margin-bottom: 8px;
-      transition: background .2s, border-color .2s;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+      margin-bottom: 8px; transition: background .2s;
     }
     .shop-item:active { background: rgba(255,255,255,.07); }
     .shop-item-info .item-name { font-weight: 800; font-size: 14px; }
@@ -340,19 +328,12 @@
       margin-left: 4px; font-family: inherit;
       transition: transform .12s, opacity .15s;
     }
-    .shop-btn-buy {
-      background: linear-gradient(135deg, #4ecdc4, #26a69a);
-      color: #001814;
-    }
-    .shop-btn-sell {
-      background: linear-gradient(135deg, #f7a01e, #ffd200);
-      color: #1a0800;
-    }
+    .shop-btn-buy  { background: linear-gradient(135deg, #4ecdc4, #26a69a); color: #001814; }
+    .shop-btn-sell { background: linear-gradient(135deg, #f7a01e, #ffd200); color: #1a0800; }
     .shop-btn-buy:active, .shop-btn-sell:active { transform: scale(.90); opacity: .85; }
     #shop-close {
       display: block; width: 100%; padding: 12px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09);
       border-radius: 14px; color: rgba(255,255,255,.45); font-size: 13px;
       cursor: pointer; margin-top: 12px; font-family: inherit; font-weight: 700;
       transition: background .2s, color .2s;
@@ -362,10 +343,7 @@
     /* ── Loading Screen ──────────────────────────── */
     #loading-screen {
       position: fixed; inset: 0; z-index: 100;
-      background: radial-gradient(ellipse at 50% 35%,
-        #1a0a4e 0%,
-        #0a1838 45%,
-        #040c1c 100%);
+      background: radial-gradient(ellipse at 50% 35%, #1a0a4e 0%, #0a1838 45%, #040c1c 100%);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center; color: #fff;
     }
@@ -375,23 +353,18 @@
       animation: logoFloat 3s ease-in-out infinite;
     }
     @keyframes logoFloat {
-      0%,100%{transform:translateY(0) rotate(0deg)}
-      50%{transform:translateY(-10px) rotate(1deg)}
+      0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}
     }
     #loading-screen h1 {
       font-size: 32px; color: #4ecdc4; margin-bottom: 6px; font-weight: 900;
       letter-spacing: -0.02em;
       text-shadow: 0 0 40px rgba(78,205,196,.55), 0 2px 10px rgba(0,0,0,.5);
     }
-    #loading-screen p {
-      color: rgba(255,255,255,.4); font-size: 13px; font-weight: 600;
-      letter-spacing: 0.04em;
-    }
+    #loading-screen p { color: rgba(255,255,255,.4); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
     #loading-bar-wrap {
       width: 220px; height: 4px;
       background: rgba(255,255,255,.07);
       border-radius: 2px; margin-top: 28px; overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.05);
     }
     #loading-bar {
       height: 100%;
@@ -400,8 +373,18 @@
       border-radius: 2px;
       box-shadow: 0 0 12px rgba(78,205,196,.8);
     }
+    #loading-nav {
+      margin-top: 28px;
+      display: flex; gap: 20px;
+    }
+    #loading-nav a {
+      color: rgba(78,205,196,.6); font-size: 12px; font-weight: 700;
+      text-decoration: none; letter-spacing: 0.05em;
+      transition: color .2s;
+    }
+    #loading-nav a:hover { color: #4ecdc4; }
 
-    /* ── Toast Notification ──────────────────────── */
+    /* ── Toast ───────────────────────────────────── */
     #toast {
       position: fixed; top: 70px; left: 50%;
       transform: translateX(-50%) translateY(-6px) scale(.96);
@@ -417,20 +400,21 @@
       white-space: nowrap;
       box-shadow: 0 6px 28px rgba(0,0,0,.45);
     }
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0) scale(1);
-    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
   </style>
 </head>
 <body>
   <!-- Loading -->
   <div id="loading-screen">
-    <img id="loading-logo" src="/logo.svg" alt="Lagoon Valley"
-         onerror="this.style.display='none'"/>
+    <img id="loading-logo" src="/logo.svg" alt="Lagoon Valley" onerror="this.style.display='none'"/>
     <h1>Lagoon Valley</h1>
     <p>Loading your tropical paradise...</p>
     <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
+    <nav id="loading-nav">
+      <a href="/about.html">About</a>
+      <a href="/how-to-play.html">How to Play</a>
+      <a href="/changelog.html">Updates</a>
+    </nav>
   </div>
 
   <!-- Canvas -->
@@ -446,8 +430,17 @@
   </div>
   <div id="tide-indicator">🌊 Low Tide</div>
 
+  <!-- Mini-map -->
+  <div id="minimap-wrap">
+    <canvas id="minimap" width="108" height="108"></canvas>
+    <div id="minimap-label">Map</div>
+  </div>
+
   <!-- Toast -->
   <div id="toast"></div>
+
+  <!-- Help Button -->
+  <a id="help-btn" href="/how-to-play.html" title="How to Play">?</a>
 
   <!-- Shop Button -->
   <div id="shop-btn">🛒 Shop</div>
