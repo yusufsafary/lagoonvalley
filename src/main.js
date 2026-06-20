@@ -982,6 +982,58 @@ function updateActionLabel(player, farm, npc, hud) {
 // INIT
 // ═══════════════════════════════════════════════════
 
+
+// ═══════════════════════════════════════════════════
+// MINI-MAP — top-left canvas showing world overview
+// ═══════════════════════════════════════════════════
+const _mmCanvas = document.getElementById('minimap');
+const _mmCtx    = _mmCanvas ? _mmCanvas.getContext('2d') : null;
+const MM_WORLD  = 18;
+
+function _mm(wx, wz) {
+  const W = _mmCanvas.width, H = _mmCanvas.height;
+  return [((wx + MM_WORLD) / (MM_WORLD*2)) * W, ((wz + MM_WORLD) / (MM_WORLD*2)) * H];
+}
+
+function drawMinimap(playerPos, plotsData, npcX, npcZ) {
+  if (!_mmCtx || !_mmCanvas) return;
+  const W = _mmCanvas.width, H = _mmCanvas.height;
+  const ctx = _mmCtx;
+  ctx.save();
+  ctx.clearRect(0, 0, W, H);
+  ctx.beginPath(); ctx.arc(W/2, H/2, W/2, 0, Math.PI*2); ctx.clip();
+
+  ctx.fillStyle = 'rgba(38,86,24,0.94)'; ctx.fillRect(0,0,W,H);
+  const beachY = ((6 + MM_WORLD) / (MM_WORLD*2)) * H;
+  ctx.fillStyle = 'rgba(220,195,120,0.75)'; ctx.fillRect(0, beachY, W, H*0.09);
+  ctx.fillStyle = 'rgba(5,55,155,0.72)'; ctx.fillRect(0, beachY+H*0.08, W, H);
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 0.5;
+  for (let i=1; i<4; i++) {
+    ctx.beginPath(); ctx.moveTo(W*i/4,0); ctx.lineTo(W*i/4,H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,H*i/4); ctx.lineTo(W,H*i/4); ctx.stroke();
+  }
+
+  for (const plot of plotsData) {
+    const [sx,sy] = _mm(plot.x, plot.z);
+    const col = plot.growthStage>=4 ? '#ffe066' : plot.cropType ? (plot.watered?'#4ecdc4':'#ff9944') : plot.tilled ? '#7a5030' : 'rgba(100,70,40,0.5)';
+    const sz  = plot.growthStage>=4 ? 5 : 3.5;
+    ctx.fillStyle = col; ctx.fillRect(sx-sz/2, sy-sz/2, sz, sz);
+  }
+
+  const [nx,ny] = _mm(npcX, npcZ);
+  ctx.fillStyle='#ff88cc'; ctx.beginPath(); ctx.arc(nx,ny,3.5,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#fff'; ctx.lineWidth=1; ctx.stroke();
+
+  const [px2,py2] = _mm(playerPos.x, playerPos.z);
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(px2,py2,4.5,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#4ecdc4'; ctx.lineWidth=2; ctx.stroke();
+  ctx.restore();
+
+  ctx.strokeStyle='rgba(78,205,196,0.4)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(W/2,H/2,W/2-1,0,Math.PI*2); ctx.stroke();
+}
+
 function init() {
   const bar = document.getElementById('loading-bar');
   let progress = 0;
@@ -1090,7 +1142,9 @@ function init() {
     // Harvest bursts
     tickHarvestBursts(dt);
 
-    renderer.render(scene, camera);
+    // Draw mini-map overlay
+  drawMinimap(player.getPosition(), gameState.get().plots, npc.x, npc.z);
+  renderer.render(scene, camera);
   }
 
   requestAnimationFrame(gameLoop);
