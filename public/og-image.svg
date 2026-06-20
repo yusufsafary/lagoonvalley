@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="og-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d0620"/>
+      <stop offset="50%" stop-color="#0a2040"/>
+      <stop offset="100%" stop-color="#0d3a50"/>
+    </linearGradient>
+    <linearGradient id="og-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4ecdc4" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#1a6e66"/>
+    </linearGradient>
+    <filter id="og-blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
+    </filter>
+    <filter id="og-glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#og-bg)"/>
+
+  <!-- Stars -->
+  <circle cx="80" cy="60" r="2" fill="#ffe066" opacity="0.8"/>
+  <circle cx="150" cy="40" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="250" cy="80" r="2" fill="#fff" opacity="0.5"/>
+  <circle cx="380" cy="50" r="1.5" fill="#ffe066" opacity="0.7"/>
+  <circle cx="480" cy="30" r="2" fill="#fff" opacity="0.6"/>
+  <circle cx="580" cy="55" r="1.5" fill="#ffe066" opacity="0.5"/>
+  <circle cx="700" cy="38" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="820" cy="22" r="2" fill="#ffe066" opacity="0.7"/>
+  <circle cx="950" cy="50" r="1.5" fill="#ffe066" opacity="0.8"/>
+  <circle cx="1050" cy="30" r="2" fill="#fff" opacity="0.6"/>
+  <circle cx="1120" cy="68" r="1.5" fill="#fff" opacity="0.7"/>
+  <circle cx="1160" cy="44" r="2" fill="#ffe066" opacity="0.5"/>
+
+  <!-- Moon glow -->
+  <circle cx="210" cy="118" r="72" fill="#fff8d6" opacity="0.12" filter="url(#og-blur)"/>
+  <circle cx="210" cy="118" r="54" fill="#fff8d6" opacity="0.95"/>
+  <circle cx="230" cy="103" r="44" fill="#0a1828"/>
+
+  <!-- Distant mountains -->
+  <polygon points="0,430 110,188 220,430" fill="#162038" opacity="0.85"/>
+  <polygon points="175,430 330,155 485,430" fill="#1a2a48"/>
+  <polygon points="380,430 545,172 710,430" fill="#162038" opacity="0.85"/>
+  <polygon points="640,430 800,192 960,430" fill="#1a2a48"/>
+  <polygon points="900,430 1040,210 1180,430" fill="#162038" opacity="0.9"/>
+  <polygon points="1060,430 1140,250 1200,360 1200,430" fill="#1a2a48"/>
+
+  <!-- Shore -->
+  <path d="M0,428 Q200,410 400,418 Q600,426 800,412 Q1000,398 1200,408 L1200,455 L0,455 Z" fill="#243a12"/>
+
+  <!-- Water -->
+  <rect x="0" y="455" width="1200" height="175" fill="url(#og-water)"/>
+  <path d="M0,470 Q100,462 200,470 Q300,478 400,470 Q500,462 600,470 Q700,478 800,470 Q900,462 1000,470 Q1100,478 1200,470" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+  <path d="M0,496 Q150,488 300,496 Q450,504 600,496 Q750,488 900,496 Q1050,504 1200,496" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+  <path d="M0,522 Q200,514 400,522 Q600,530 800,522 Q1000,514 1200,522" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+  <!-- Water shimmer -->
+  <ellipse cx="600" cy="494" rx="300" ry="20" fill="rgba(255,224,102,0.06)"/>
+
+  <!-- Palm tree (right) -->
+  <path d="M1040,455 Q1032,392 1024,330 Q1016,268 1020,218" stroke="#7a4a20" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <path d="M1020,218 Q976,170 924,188" stroke="#2e7a18" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+  <path d="M1020,218 Q1007,164 1025,140" stroke="#38902a" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+  <path d="M1020,218 Q1046,170 1086,180" stroke="#2e7a18" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+  <path d="M1020,218 Q1056,210 1096,230" stroke="#38902a" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+  <path d="M1020,218 Q992,240 966,256" stroke="#2e7a18" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+  <circle cx="1016" cy="230" r="8.5" fill="#6b3a1f"/>
+  <circle cx="1028" cy="223" r="7" fill="#7a4522"/>
+
+  <!-- Crop plots (bottom left) -->
+  <rect x="62" y="430" width="55" height="24" rx="4" fill="#1c3a0c"/>
+  <rect x="126" y="430" width="55" height="24" rx="4" fill="#1c3a0c"/>
+  <rect x="190" y="430" width="55" height="24" rx="4" fill="#1c3a0c"/>
+  <line x1="62" y1="442" x2="117" y2="442" stroke="#5aaa2a" stroke-width="1.8" opacity="0.7"/>
+  <line x1="126" y1="442" x2="181" y2="442" stroke="#5aaa2a" stroke-width="1.8" opacity="0.7"/>
+  <line x1="190" y1="442" x2="245" y2="442" stroke="#5aaa2a" stroke-width="1.8" opacity="0.7"/>
+
+  <!-- Text glow blob -->
+  <ellipse cx="530" cy="260" rx="380" ry="150" fill="rgba(78,205,196,0.04)" filter="url(#og-blur)"/>
+
+  <!-- Title: LAGOON -->
+  <text x="100" y="260"
+    font-family="'Segoe UI', Arial, system-ui, sans-serif"
+    font-size="112" font-weight="900" letter-spacing="6"
+    fill="#ffe066" filter="url(#og-glow)" opacity="0.2">LAGOON</text>
+  <text x="100" y="260"
+    font-family="'Segoe UI', Arial, system-ui, sans-serif"
+    font-size="112" font-weight="900" letter-spacing="6"
+    fill="#ffe066">LAGOON</text>
+
+  <!-- Title: VALLEY -->
+  <text x="100" y="378"
+    font-family="'Segoe UI', Arial, system-ui, sans-serif"
+    font-size="112" font-weight="900" letter-spacing="6"
+    fill="#4ecdc4" filter="url(#og-glow)" opacity="0.2">VALLEY</text>
+  <text x="100" y="378"
+    font-family="'Segoe UI', Arial, system-ui, sans-serif"
+    font-size="112" font-weight="900" letter-spacing="6"
+    fill="#4ecdc4">VALLEY</text>
+
+  <!-- Tagline -->
+  <text x="100" y="420"
+    font-family="'Segoe UI', Arial, system-ui, sans-serif"
+    font-size="26" font-weight="400" letter-spacing="3"
+    fill="rgba(210,235,255,0.65)">A mobile farming game where the tide sets the rules</text>
+
+  <!-- Accent dots -->
+  <circle cx="100" cy="296" r="4" fill="#ffe066" opacity="0.6"/>
+  <circle cx="116" cy="296" r="4" fill="#4ecdc4" opacity="0.6"/>
+  <circle cx="132" cy="296" r="4" fill="rgba(255,255,255,0.3)"/>
+
+  <!-- Domain -->
+  <text x="1164" y="602" text-anchor="end"
+    font-family="'Segoe UI', Arial, system-ui, sans-serif"
+    font-size="20" fill="rgba(255,255,255,0.28)" letter-spacing="1">lagoonvalley.xyz</text>
+</svg>
