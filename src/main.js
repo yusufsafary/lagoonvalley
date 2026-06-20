@@ -32,15 +32,15 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled     = true;
 renderer.shadowMap.type        = THREE.PCFSoftShadowMap;
 renderer.toneMapping           = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure   = 1.1;
+renderer.toneMappingExposure   = 1.25;
 renderer.outputColorSpace      = THREE.SRGBColorSpace;
 container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 
 // ── Camera ───────────────────────────────────────────
-const camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 200);
-const CAM_OFFSET = new THREE.Vector3(0, 11, 9);
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
+const CAM_OFFSET = new THREE.Vector3(0, 13, 10);
 camera.position.copy(CAM_OFFSET);
 camera.lookAt(0, 0, 0);
 
@@ -431,7 +431,7 @@ function buildWorld() {
   // ── Ground layers ─────────────────────────────
   // Grass base
   const groundGeo = new THREE.PlaneGeometry(54, 30, 1, 1);
-  const groundMat = new THREE.MeshLambertMaterial({ color: 0x5a9e3a });
+  const groundMat = new THREE.MeshLambertMaterial({ color: 0x4caa28 });
   const ground    = new THREE.Mesh(groundGeo, groundMat);
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
@@ -439,7 +439,7 @@ function buildWorld() {
 
   // Dirt path dirt strip under farm
   const dirtGeo = new THREE.PlaneGeometry(14, 8);
-  const dirtMat = new THREE.MeshLambertMaterial({ color: 0x7a5c34 });
+  const dirtMat = new THREE.MeshLambertMaterial({ color: 0x5c4220 });
   const dirt    = new THREE.Mesh(dirtGeo, dirtMat);
   dirt.rotation.x = -Math.PI / 2;
   dirt.position.set(-1, 0.005, 0);
@@ -448,7 +448,7 @@ function buildWorld() {
 
   // Sandy beach
   const beachGeo = new THREE.PlaneGeometry(54, 8);
-  const beachMat = new THREE.MeshLambertMaterial({ color: 0xe8d498 });
+  const beachMat = new THREE.MeshLambertMaterial({ color: 0xf2e3aa });
   const beach    = new THREE.Mesh(beachGeo, beachMat);
   beach.rotation.x = -Math.PI / 2;
   beach.position.set(0, 0.01, 7.5);
@@ -876,7 +876,7 @@ function updateDayNight(gameMinute) {
   const fogColor = isDay
     ? new THREE.Color(0x87ceeb).lerp(new THREE.Color(0xffd0a0), dd)
     : new THREE.Color(0x050510);
-  scene.fog = new THREE.Fog(fogColor, 22, 70);
+  scene.fog = new THREE.Fog(fogColor, 18, 52);
 }
 
 // ═══════════════════════════════════════════════════
@@ -1061,7 +1061,7 @@ function init() {
 
     // Camera follow
     const targetCam = player.getPosition().clone().add(CAM_OFFSET);
-    camera.position.lerp(targetCam, 0.07);
+    camera.position.lerp(targetCam, 0.09);
     camera.lookAt(player.getPosition());
 
     // Animated ocean
