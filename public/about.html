@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About - Lagoon Valley</title>
+  <meta name="description" content="Lagoon Valley is a mobile-first 3D farming game where the tides roll in and shape your day. Farm, trade, and explore a coastal valley built in Three.js."/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <meta property="og:title" content="About - Lagoon Valley"/>
+  <meta property="og:description" content="A mobile farming game where the tide sets the rules."/>
+  <meta property="og:image" content="https://lagoonvalley.xyz/og-image.svg"/>
+  <meta property="og:url" content="https://lagoonvalley.xyz/about.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d0620;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --teal: #4ecdc4;
+      --gold: #ffe066;
+      --text: #ddeeff;
+      --muted: #7799bb;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(13,6,32,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .nav-logo img { width: 38px; height: 38px; }
+    .nav-logo span { font-weight: 800; font-size: 17px; letter-spacing: 0.5px; }
+    .nav-links {
+      display: flex; align-items: center; gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.3px;
+      padding: 6px 12px; border-radius: 8px;
+      transition: color .15s, background .15s;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a.active { color: var(--teal); }
+    .nav-cta {
+      background: linear-gradient(135deg, #4ecdc4, #38a09a) !important;
+      color: #000 !important; font-weight: 800 !important;
+      padding: 7px 18px !important; border-radius: 20px !important;
+    }
+    .nav-cta:hover { opacity: 0.9; background: linear-gradient(135deg, #4ecdc4, #38a09a) !important; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 80px 28px 60px;
+      max-width: 760px; margin: 0 auto;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(78,205,196,0.12); border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 20px; padding: 5px 14px; margin-bottom: 28px;
+      font-size: 12px; font-weight: 700; color: var(--teal); letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .hero-logo { width: 120px; height: auto; margin: 0 auto 30px; display: block; }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 900; line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--teal); }
+    .hero p {
+      font-size: 18px; color: var(--muted); max-width: 560px;
+      margin: 0 auto 36px; line-height: 1.8;
+    }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #4ecdc4, #38a09a);
+      color: #000; font-weight: 800; font-size: 15px;
+      padding: 13px 28px; border-radius: 28px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: opacity .15s, transform .15s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); font-weight: 700; font-size: 15px;
+      padding: 13px 28px; border-radius: 28px;
+      text-decoration: none; cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.15); }
+
+    /* ── Divider wave ── */
+    .wave-divider { width: 100%; overflow: hidden; line-height: 0; }
+    .wave-divider svg { display: block; width: 100%; height: 48px; }
+
+    /* ── Content sections ── */
+    .section {
+      max-width: 760px; margin: 0 auto;
+      padding: 48px 28px;
+    }
+    .section + .section { padding-top: 0; }
+
+    .section-label {
+      font-size: 11px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .section h2 {
+      font-size: clamp(24px, 4vw, 36px); font-weight: 900;
+      line-height: 1.25; margin-bottom: 20px;
+    }
+    .section h2 .accent { color: var(--gold); }
+    .section p {
+      color: var(--muted); font-size: 16px; line-height: 1.85;
+      margin-bottom: 18px;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* ── Feature cards ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px; margin-top: 32px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px 20px;
+      transition: border-color .2s;
+    }
+    .card:hover { border-color: rgba(78,205,196,0.3); }
+    .card-icon { font-size: 28px; margin-bottom: 12px; }
+    .card-title { font-weight: 800; font-size: 14px; margin-bottom: 6px; color: var(--text); }
+    .card-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ── Tide callout ── */
+    .callout {
+      background: rgba(78,205,196,0.07);
+      border: 1px solid rgba(78,205,196,0.2);
+      border-radius: 16px; padding: 28px 28px;
+      margin: 36px 0;
+    }
+    .callout h3 {
+      font-size: 18px; font-weight: 800; color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .callout p { color: var(--muted); font-size: 15px; line-height: 1.8; margin: 0; }
+
+    /* ── Tech stack ── */
+    .tech-list {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+    }
+    .tech-tag {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 5px 12px;
+      font-size: 12px; font-weight: 700; color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 28px;
+      text-align: center;
+      color: var(--muted); font-size: 13px;
+    }
+    .footer a { color: var(--teal); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+
+    @media (max-width: 600px) {
+      .nav { padding: 12px 16px; }
+      .nav-logo span { display: none; }
+      .hero { padding: 50px 16px 40px; }
+      .section { padding: 36px 16px; }
+      .callout { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <img src="/logo.svg" alt="Lagoon Valley"/>
+      <span>Lagoon Valley</span>
+    </a>
+    <div class="nav-links">
+      <a href="/about.html" class="active">About</a>
+      <a href="/how-to-play.html">How to Play</a>
+      <a href="/changelog.html">Updates</a>
+      <a href="/" class="nav-cta">Play Now</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">🌴 The Game</div>
+    <img src="/logo.svg" alt="Lagoon Valley" class="hero-logo"/>
+    <h1>A valley by the <span>sea</span></h1>
+    <p>Lagoon Valley is a mobile-first 3D farming game built for people who want something calm to tend to. The tide rolls in, changes what you can reach, and rolls back out. Days pass. You settle in.</p>
+    <div class="hero-actions">
+      <a href="/" class="btn-primary">Play Now</a>
+      <a href="/how-to-play.html" class="btn-secondary">How to Play</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The World</div>
+    <h2>Where the hills <span class="accent">meet the sea</span></h2>
+    <p>The valley sits in a pocket of land cradled between rolling hills and a coastal lagoon. On one side, farmland stretches toward the morning light. On the other, the water breathes with the tide, swelling and retreating in a rhythm that every farmer here learns to read.</p>
+    <p>You arrive with a small plot, a handful of seeds, and enough gold to get started. What you do with it is up to you.</p>
+
+    <div class="callout">
+      <h3>The tide is not a backdrop</h3>
+      <p>Most of the coastal farmland floods at high tide. The best plots sit closest to the water, which means they are also the most vulnerable. Knowing when to plant and when to step back is part of the game, not a tutorial to skip past.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🌱</div>
+        <div class="card-title">Farming</div>
+        <div class="card-desc">Till, plant, water, harvest. Six crops with different grow times and market prices.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌊</div>
+        <div class="card-title">Tide System</div>
+        <div class="card-desc">High tide floods coastal plots. Plan your day around it or lose your harvest to the water.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏪</div>
+        <div class="card-title">Lagoon Market</div>
+        <div class="card-desc">Buy new seed varieties and sell what you grow. Prices shift with what the market wants.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💬</div>
+        <div class="card-title">Locals</div>
+        <div class="card-desc">Mira wanders the valley. Talk to her and she will tell you things worth knowing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Built for Mobile</div>
+    <h2>Hold it in your hands, <span class="accent">not on a desk</span></h2>
+    <p>Lagoon Valley was designed from the ground up for phones. The virtual joystick on the bottom left moves your character. The action button on the bottom right does everything else: till, plant, water, harvest, talk. The inventory bar sits at the bottom where your thumb can reach it.</p>
+    <p>It works in a browser, which means no install. Tap the link, wait a few seconds for the world to load, and you are in.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Under the Hood</div>
+    <h2>How it is <span class="accent">put together</span></h2>
+    <p>The 3D world runs on Three.js, rendered directly to a canvas element that fills the screen. The build pipeline uses Vite, and the whole thing ships as static files hosted on GitHub Pages.</p>
+    <p>No backend, no accounts, no tracking. The game state lives in memory while you play. It is a quiet project built because it was interesting to build.</p>
+    <div class="tech-list">
+      <span class="tech-tag">Three.js</span>
+      <span class="tech-tag">Vite</span>
+      <span class="tech-tag">Vanilla JS</span>
+      <span class="tech-tag">GitHub Pages</span>
+      <span class="tech-tag">Mobile-first</span>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="/">Play Lagoon Valley</a>
+      <a href="/how-to-play.html">How to Play</a>
+      <a href="/changelog.html">Updates</a>
+      <a href="https://github.com/yusufsafary/lagoonvalley" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p>Lagoon Valley &copy; 2025. Open source, made with care.</p>
+  </footer>
+
+</body>
+</html>
