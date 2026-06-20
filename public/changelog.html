@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Updates - Lagoon Valley</title>
+  <meta name="description" content="See what has changed in Lagoon Valley. Full changelog of every release since the game launched."/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <meta property="og:title" content="Updates - Lagoon Valley"/>
+  <meta property="og:description" content="Full changelog for Lagoon Valley."/>
+  <meta property="og:image" content="https://lagoonvalley.xyz/og-image.svg"/>
+  <meta property="og:url" content="https://lagoonvalley.xyz/changelog.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d0620;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --teal: #4ecdc4;
+      --gold: #ffe066;
+      --text: #ddeeff;
+      --muted: #7799bb;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(13,6,32,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .nav-logo img { width: 38px; height: 38px; }
+    .nav-logo span { font-weight: 800; font-size: 17px; letter-spacing: 0.5px; }
+    .nav-links { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; font-weight: 600;
+      padding: 6px 12px; border-radius: 8px;
+      transition: color .15s, background .15s;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a.active { color: var(--teal); }
+    .nav-cta {
+      background: linear-gradient(135deg, #4ecdc4, #38a09a) !important;
+      color: #000 !important; font-weight: 800 !important;
+      padding: 7px 18px !important; border-radius: 20px !important;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 70px 28px 50px;
+      max-width: 760px; margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,224,102,0.10); border: 1px solid rgba(255,224,102,0.28);
+      border-radius: 20px; padding: 5px 14px; margin-bottom: 22px;
+      font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5.5vw, 52px);
+      font-weight: 900; line-height: 1.2; margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p { color: var(--muted); font-size: 17px; line-height: 1.85; max-width: 540px; }
+
+    /* ── Timeline ── */
+    .timeline {
+      max-width: 760px; margin: 0 auto;
+      padding: 20px 28px 60px;
+    }
+
+    .release {
+      position: relative;
+      padding-left: 36px;
+      padding-bottom: 52px;
+    }
+    .release:last-child { padding-bottom: 0; }
+
+    /* Vertical line */
+    .release::before {
+      content: '';
+      position: absolute; left: 11px; top: 26px;
+      width: 2px; bottom: 0;
+      background: var(--border);
+    }
+    .release:last-child::before { display: none; }
+
+    /* Dot */
+    .release::after {
+      content: '';
+      position: absolute; left: 4px; top: 6px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--teal);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--teal);
+    }
+    .release.latest::after {
+      background: var(--gold);
+      box-shadow: 0 0 0 2px var(--gold);
+    }
+
+    .release-header {
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap; margin-bottom: 16px;
+    }
+    .release-version {
+      font-size: 18px; font-weight: 900; color: var(--text);
+    }
+    .release-date {
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 2px 9px;
+    }
+    .release-badge {
+      font-size: 11px; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 6px;
+    }
+    .badge-latest { background: rgba(255,224,102,0.14); color: var(--gold); border: 1px solid rgba(255,224,102,0.3); }
+    .badge-feature { background: rgba(78,205,196,0.12); color: var(--teal); border: 1px solid rgba(78,205,196,0.28); }
+
+    .release-desc {
+      color: var(--muted); font-size: 14px; line-height: 1.8;
+      margin-bottom: 18px; max-width: 600px;
+    }
+
+    .change-group { margin-bottom: 18px; }
+    .change-group-label {
+      font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .change-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .change-list li {
+      display: flex; gap: 10px; align-items: baseline;
+      font-size: 13px; color: var(--text); line-height: 1.6;
+    }
+    .change-list li .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 6px;
+    }
+    .dot-green { background: #5aaa2a; }
+    .dot-teal  { background: var(--teal); }
+    .dot-gold  { background: var(--gold); }
+    .dot-muted { background: var(--muted); }
+
+    /* ── Roadmap ── */
+    .roadmap {
+      max-width: 760px; margin: 0 auto;
+      padding: 0 28px 60px;
+      border-top: 1px solid var(--border);
+      padding-top: 48px;
+    }
+    .roadmap h2 { font-size: 28px; font-weight: 900; margin-bottom: 8px; }
+    .roadmap .subtitle { color: var(--muted); font-size: 15px; margin-bottom: 28px; line-height: 1.7; }
+
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .roadmap-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px;
+    }
+    .roadmap-status {
+      font-size: 10px; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .status-planned { color: var(--muted); }
+    .status-soon { color: var(--teal); }
+    .roadmap-item h4 { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
+    .roadmap-item p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 28px; text-align: center;
+      color: var(--muted); font-size: 13px;
+    }
+    .footer a { color: var(--teal); text-decoration: none; }
+    .footer-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+
+    @media (max-width: 600px) {
+      .nav { padding: 12px 16px; }
+      .nav-logo span { display: none; }
+      .hero { padding: 44px 16px 36px; }
+      .timeline { padding: 20px 16px 48px; }
+      .roadmap { padding: 36px 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <img src="/logo.svg" alt="Lagoon Valley"/>
+      <span>Lagoon Valley</span>
+    </a>
+    <div class="nav-links">
+      <a href="/about.html">About</a>
+      <a href="/how-to-play.html">How to Play</a>
+      <a href="/changelog.html" class="active">Updates</a>
+      <a href="/" class="nav-cta">Play Now</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">📋 Changelog</div>
+    <h1>What has <span>changed</span></h1>
+    <p>Every update to Lagoon Valley, from the initial release onward. New builds go out as features are ready.</p>
+  </div>
+
+  <div class="timeline">
+
+    <!-- v0.2.0 -->
+    <div class="release latest">
+      <div class="release-header">
+        <span class="release-version">v0.2.0</span>
+        <span class="release-date">June 2025</span>
+        <span class="release-badge badge-latest">Latest</span>
+        <span class="release-badge badge-feature">Update</span>
+      </div>
+      <p class="release-desc">A round of quality-of-life improvements and new content built on player feedback from the first release. The tide system got a visual refresh and the market was expanded.</p>
+
+      <div class="change-group">
+        <div class="change-group-label">Added</div>
+        <ul class="change-list">
+          <li><span class="dot dot-green"></span>Tide indicator now shows a countdown to the next tide shift</li>
+          <li><span class="dot dot-green"></span>Two new crop varieties: blueberry and pumpkin</li>
+          <li><span class="dot dot-green"></span>NPC Mira now has season-aware dialogue that changes based on the in-game day count</li>
+          <li><span class="dot dot-green"></span>Soft particle effects on crop harvest for visual feedback</li>
+          <li><span class="dot dot-green"></span>About, How to Play, and Changelog pages on the site</li>
+          <li><span class="dot dot-green"></span>Favicon and OG image for social sharing</li>
+        </ul>
+      </div>
+
+      <div class="change-group">
+        <div class="change-group-label">Changed</div>
+        <ul class="change-list">
+          <li><span class="dot dot-teal"></span>Joystick zone enlarged for easier thumb placement on larger phones</li>
+          <li><span class="dot dot-teal"></span>Coastal plots now show a subtle blue tint when high tide is approaching</li>
+          <li><span class="dot dot-teal"></span>Shop panel now scrolls smoothly on small screens</li>
+          <li><span class="dot dot-teal"></span>Action button label updates dynamically to show the current action (Till, Plant, Water, Harvest, Talk)</li>
+        </ul>
+      </div>
+
+      <div class="change-group">
+        <div class="change-group-label">Fixed</div>
+        <ul class="change-list">
+          <li><span class="dot dot-muted"></span>Watered crops occasionally resetting to stage 1 after page reload</li>
+          <li><span class="dot dot-muted"></span>Action button registering double taps on fast devices</li>
+          <li><span class="dot dot-muted"></span>Shop close button misaligned on very narrow screens</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v0.1.0 -->
+    <div class="release">
+      <div class="release-header">
+        <span class="release-version">v0.1.0</span>
+        <span class="release-date">May 2025</span>
+        <span class="release-badge badge-feature">First Release</span>
+      </div>
+      <p class="release-desc">The first public release of Lagoon Valley. A mobile-first 3D farming game built in Three.js with a working tide system, a crop economy, and an NPC who actually has something to say.</p>
+
+      <div class="change-group">
+        <div class="change-group-label">Shipped</div>
+        <ul class="change-list">
+          <li><span class="dot dot-green"></span>Fully explorable 3D valley with coastal terrain and a working lagoon</li>
+          <li><span class="dot dot-green"></span>Four-stage crop growth system: till, plant, water, harvest</li>
+          <li><span class="dot dot-green"></span>Tide cycle that floods and unflooods coastal farm plots on a real timer</li>
+          <li><span class="dot dot-green"></span>Real-time day and time of day cycle with HUD display</li>
+          <li><span class="dot dot-green"></span>The Lagoon Market with buy and sell tabs</li>
+          <li><span class="dot dot-green"></span>Four initial crop varieties: carrot, tomato, corn, watermelon</li>
+          <li><span class="dot dot-green"></span>NPC Mira with contextual dialogue</li>
+          <li><span class="dot dot-green"></span>Virtual joystick and action button controls for mobile</li>
+          <li><span class="dot dot-green"></span>Inventory bar with slot selection</li>
+          <li><span class="dot dot-green"></span>Loading screen with progress bar</li>
+          <li><span class="dot dot-green"></span>Toast notification system for in-game feedback</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Roadmap -->
+  <div class="roadmap">
+    <h2>What is coming next</h2>
+    <p class="subtitle">These are features being worked on or planned for future releases. Nothing is confirmed until it ships, but this gives a sense of where the valley is heading.</p>
+
+    <div class="roadmap-grid">
+      <div class="roadmap-item">
+        <div class="roadmap-status status-soon">Coming Soon</div>
+        <h4>Fishing</h4>
+        <p>Cast from the shore during low tide. Different fish at different times of day. Sell at the market like crops.</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-status status-soon">Coming Soon</div>
+        <h4>More NPCs</h4>
+        <p>Additional residents with their own knowledge of the valley. Each one tied to a different area of the land.</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-status status-planned">Planned</div>
+        <h4>Seasons</h4>
+        <p>A seasonal cycle that affects which crops grow and how often the tide shifts. Spring is calm. Storm season is not.</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-status status-planned">Planned</div>
+        <h4>Save System</h4>
+        <p>Persist your farm progress across sessions using local storage. No accounts needed.</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-status status-planned">Planned</div>
+        <h4>Craftable Items</h4>
+        <p>Combine harvested crops to create new items worth more at the market. A basic crafting loop.</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-status status-planned">Planned</div>
+        <h4>Better Models</h4>
+        <p>Replace the current primitive geometry with proper GLTF models for characters, crops, and buildings.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="/">Play</a>
+      <a href="/about.html">About</a>
+      <a href="/how-to-play.html">How to Play</a>
+      <a href="https://github.com/yusufsafary/lagoonvalley" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p>Lagoon Valley &copy; 2025. Open source, made with care.</p>
+  </footer>
+
+</body>
+</html>
