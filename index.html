@@ -15,9 +15,6 @@
   <meta property="og:url" content="https://lagoonvalley.xyz/"/>
   <meta property="og:type" content="website"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Lagoon Valley"/>
-  <meta name="twitter:description" content="A mobile farming game where the tide sets the rules."/>
-  <meta name="twitter:image" content="https://lagoonvalley.xyz/og-image.svg"/>
   <link rel="canonical" href="https://lagoonvalley.xyz/"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -25,8 +22,7 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
+      width: 100%; height: 100%; overflow: hidden;
       background: #050d1a;
       font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
       touch-action: none;
@@ -35,64 +31,54 @@
     #canvas-container { position: fixed; inset: 0; width: 100%; height: 100%; }
     canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
 
-    /* ── HUD ─────────────────────────────────────── */
+    /* ── HUD ─────────────────────────────────── */
     #hud {
       position: fixed; top: 0; left: 0; right: 0;
       display: flex; justify-content: space-between; align-items: flex-start;
       padding: 14px 16px 32px;
-      background: linear-gradient(to bottom, rgba(0,0,0,.6) 0%, rgba(0,0,0,.1) 75%, transparent 100%);
-      pointer-events: none;
-      z-index: 10;
+      background: linear-gradient(to bottom, rgba(0,0,0,.6) 0%, rgba(0,0,0,.1) 75%, transparent);
+      pointer-events: none; z-index: 10;
     }
     #hud-left { display: flex; flex-direction: column; gap: 1px; }
     #hud-day {
       color: rgba(168,230,207,.85); font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.1em;
+      text-transform: uppercase; letter-spacing: .1em;
       text-shadow: 0 1px 6px rgba(0,0,0,.9);
     }
     #hud-time {
       color: #fff; font-size: 24px; font-weight: 900;
-      text-shadow: 0 2px 10px rgba(0,0,0,.7);
-      line-height: 1; letter-spacing: -0.02em;
+      text-shadow: 0 2px 10px rgba(0,0,0,.7); line-height: 1; letter-spacing: -.02em;
     }
     #hud-money {
       display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(255,224,102,.13);
-      border: 1.5px solid rgba(255,224,102,.28);
-      border-radius: 22px; padding: 6px 14px;
-      color: #ffe066; font-size: 16px; font-weight: 900;
+      background: rgba(255,224,102,.13); border: 1.5px solid rgba(255,224,102,.28);
+      border-radius: 22px; padding: 6px 14px; color: #ffe066;
+      font-size: 16px; font-weight: 900;
       text-shadow: 0 1px 6px rgba(0,0,0,.5);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
       box-shadow: 0 2px 16px rgba(255,224,102,.12), inset 0 1px 0 rgba(255,255,255,.08);
-      letter-spacing: -0.01em;
     }
 
-    /* ── Tide Pill ───────────────────────────────── */
+    /* ── Tide Pill ───────────────────────────── */
     #tide-indicator {
       position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: rgba(0,50,160,.42);
-      border: 1.5px solid rgba(80,180,255,.3);
-      color: #88ddff; padding: 4px 16px;
-      border-radius: 22px; font-size: 11px; font-weight: 800;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      background: rgba(0,50,160,.42); border: 1.5px solid rgba(80,180,255,.3);
+      color: #88ddff; padding: 4px 16px; border-radius: 22px;
+      font-size: 11px; font-weight: 800;
       pointer-events: none; z-index: 10;
       text-shadow: 0 1px 4px rgba(0,0,0,.6);
       box-shadow: 0 2px 20px rgba(0,60,200,.2);
-      letter-spacing: 0.06em;
-      white-space: nowrap;
-      text-transform: uppercase;
+      letter-spacing: .06em; white-space: nowrap; text-transform: uppercase;
     }
 
-    /* ── Mini-map ────────────────────────────────── */
+    /* ── Mini-map ────────────────────────────── */
     #minimap-wrap {
       position: fixed; top: 72px; left: 16px;
       z-index: 10; pointer-events: none;
     }
     #minimap {
-      width: 108px; height: 108px;
-      border-radius: 50%;
+      width: 108px; height: 108px; border-radius: 50%;
       border: 1.5px solid rgba(78,205,196,.35);
       box-shadow: 0 4px 18px rgba(0,0,0,.45), 0 0 0 1px rgba(78,205,196,.08);
       display: block;
@@ -100,73 +86,32 @@
     #minimap-label {
       text-align: center; font-size: 8px; font-weight: 800;
       color: rgba(78,205,196,.55); text-transform: uppercase;
-      letter-spacing: 0.1em; margin-top: 4px;
+      letter-spacing: .1em; margin-top: 4px;
     }
 
-    /* ── Inventory Bar ───────────────────────────── */
-    #inventory-bar {
-      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 8px;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      background: rgba(5,10,20,.65);
-      border: 1.5px solid rgba(255,255,255,.1);
-      border-radius: 20px; padding: 8px 10px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.06) inset;
-      z-index: 10;
-      max-width: calc(100vw - 28px);
-      overflow-x: auto;
-    }
-    #inventory-bar::-webkit-scrollbar { display: none; }
-    .inv-slot {
-      width: 56px; height: 56px; min-width: 56px;
-      background: rgba(255,255,255,.05);
-      border-radius: 14px;
-      border: 1.5px solid rgba(255,255,255,.1);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; color: #fff;
-      transition: border-color .2s, background .2s, transform .12s, box-shadow .2s;
-      user-select: none; gap: 1px;
-    }
-    .inv-slot:active { transform: scale(.90); }
-    .inv-slot.selected {
-      border-color: rgba(255,224,102,.7);
-      background: rgba(255,224,102,.12);
-      box-shadow: 0 0 20px rgba(255,224,102,.3), 0 0 0 3px rgba(255,224,102,.1);
-    }
-    .inv-slot .slot-icon { font-size: 24px; line-height: 1; }
-    .inv-slot .slot-count { font-size: 10px; color: #ffe066; font-weight: 900; line-height: 1; }
-    .inv-slot .slot-name { font-size: 7px; color: rgba(255,255,255,.4); letter-spacing: 0.02em; }
-
-    /* ── Action Button ───────────────────────────── */
-    #action-btn {
-      position: fixed; bottom: 100px; right: 22px;
-      width: 72px; height: 72px;
-      background: linear-gradient(140deg, #4ecdc4 0%, #26a69a 55%, #1a7a70 100%);
-      border-radius: 50%;
-      border: 2.5px solid rgba(255,255,255,.32);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 10; font-size: 30px;
-      box-shadow: 0 6px 28px rgba(0,0,0,.5), 0 0 0 0 rgba(78,205,196,.45);
-      transition: transform .12s;
+    /* ── Menu Button ─────────────────────────── */
+    #menu-btn {
+      position: fixed; top: 58px; right: 16px;
+      width: 44px; height: 36px;
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255,255,255,.22);
+      border-radius: 12px; cursor: pointer; z-index: 11;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      transition: background .2s, transform .12s;
       user-select: none;
-      animation: actionPulse 2.6s ease-in-out infinite;
     }
-    @keyframes actionPulse {
-      0%,100% { box-shadow: 0 6px 28px rgba(0,0,0,.5), 0 0 0 0 rgba(78,205,196,.5); }
-      55% { box-shadow: 0 6px 28px rgba(0,0,0,.5), 0 0 0 12px rgba(78,205,196,.0); }
+    #menu-btn span {
+      display: block; width: 18px; height: 2px;
+      background: rgba(255,255,255,.85); border-radius: 2px;
+      transition: all .22s;
     }
-    #action-btn:active { transform: scale(.86); animation: none; box-shadow: 0 2px 12px rgba(0,0,0,.4); }
-    #action-label {
-      position: fixed; bottom: 176px; right: 14px;
-      color: rgba(255,255,255,.8); font-size: 10px; font-weight: 800;
-      text-shadow: 0 1px 6px rgba(0,0,0,.9); z-index: 10;
-      text-align: center; width: 84px;
-      pointer-events: none;
-      text-transform: uppercase; letter-spacing: 0.06em;
-    }
+    #menu-btn:active { transform: scale(.88); }
+    #menu-btn.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    #menu-btn.open span:nth-child(2) { opacity: 0; }
+    #menu-btn.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-    /* ── Shop Button ─────────────────────────────── */
+    /* ── Shop Button ─────────────────────────── */
     #shop-btn {
       position: fixed; top: 16px; right: 16px;
       background: linear-gradient(135deg, #f7a01e 0%, #ffd200 100%);
@@ -174,45 +119,141 @@
       padding: 7px 15px; border-radius: 24px; cursor: pointer;
       z-index: 10; border: 1.5px solid rgba(255,255,255,.4);
       box-shadow: 0 4px 18px rgba(247,160,30,.38), 0 2px 8px rgba(0,0,0,.28);
-      user-select: none; letter-spacing: 0.02em;
-      transition: transform .12s, box-shadow .2s;
+      user-select: none; letter-spacing: .02em;
+      transition: transform .12s;
     }
     #shop-btn:active { transform: scale(.90); }
 
-    /* ── Help Button ─────────────────────────────── */
-    #help-btn {
-      position: fixed; top: 16px; right: 90px;
-      width: 34px; height: 34px;
-      background: rgba(255,255,255,.1);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(255,255,255,.2);
-      border-radius: 50%; cursor: pointer;
-      z-index: 10;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 900; color: rgba(255,255,255,.8);
-      box-shadow: 0 2px 12px rgba(0,0,0,.3);
-      transition: background .2s, transform .12s;
-      user-select: none;
-      text-decoration: none;
+    /* ── Game Menu Overlay ────────────────────── */
+    #game-menu {
+      position: fixed; inset: 0; z-index: 40;
+      pointer-events: none; display: flex; justify-content: flex-end;
     }
-    #help-btn:active { transform: scale(.90); background: rgba(78,205,196,.2); }
+    #game-menu-panel {
+      position: relative; top: 0; right: 0;
+      width: min(320px, 88vw); height: 100%;
+      background: linear-gradient(165deg, rgba(5,14,28,.97) 0%, rgba(8,22,44,.97) 100%);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-left: 1.5px solid rgba(78,205,196,.18);
+      box-shadow: -20px 0 60px rgba(0,0,0,.7);
+      padding: 48px 28px 36px;
+      display: flex; flex-direction: column;
+      transform: translateX(110%);
+      transition: transform .32s cubic-bezier(.22,.7,.3,1);
+      pointer-events: auto;
+    }
+    #game-menu.open #game-menu-panel { transform: translateX(0); }
+    #game-menu-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.45);
+      opacity: 0; transition: opacity .32s;
+      pointer-events: none;
+    }
+    #game-menu.open #game-menu-backdrop { opacity: 1; pointer-events: auto; }
 
-    /* ── Joystick ────────────────────────────────── */
+    .menu-logo {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 32px;
+    }
+    .menu-logo img { width: 40px; height: 40px; }
+    .menu-logo span { font-size: 18px; font-weight: 900; color: #4ecdc4; letter-spacing: -.01em; }
+
+    .menu-nav { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .menu-nav a, .menu-nav button {
+      display: flex; align-items: center; gap: 14px;
+      padding: 15px 18px; border-radius: 16px;
+      background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.08);
+      color: rgba(220,240,255,.9); font-size: 16px; font-weight: 800;
+      text-decoration: none; cursor: pointer; font-family: inherit;
+      transition: background .18s, border-color .18s, transform .12s;
+    }
+    .menu-nav a:active, .menu-nav button:active { transform: scale(.96); }
+    .menu-nav a:hover, .menu-nav button:hover {
+      background: rgba(78,205,196,.12); border-color: rgba(78,205,196,.28);
+    }
+    .menu-nav .menu-icon { font-size: 22px; width: 28px; text-align: center; }
+    .menu-nav .menu-text { flex: 1; }
+    .menu-nav .menu-desc { font-size: 11px; color: rgba(120,180,200,.6); font-weight: 600; margin-top: 1px; }
+    .menu-close-btn {
+      margin-top: 18px;
+      background: rgba(78,205,196,.12) !important;
+      border-color: rgba(78,205,196,.25) !important;
+      color: #4ecdc4 !important;
+    }
+
+    .menu-footer {
+      margin-top: 24px; padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      color: rgba(100,150,180,.5); font-size: 11px; font-weight: 600;
+      text-align: center;
+    }
+    .menu-footer a { color: rgba(78,205,196,.5); text-decoration: none; }
+
+    /* ── Inventory Bar ───────────────────────── */
+    #inventory-bar {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px;
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      background: rgba(5,10,20,.65); border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: 20px; padding: 8px 10px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.06) inset;
+      z-index: 10; max-width: calc(100vw - 28px); overflow-x: auto;
+    }
+    #inventory-bar::-webkit-scrollbar { display: none; }
+    .inv-slot {
+      width: 56px; height: 56px; min-width: 56px;
+      background: rgba(255,255,255,.05); border-radius: 14px;
+      border: 1.5px solid rgba(255,255,255,.1);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; color: #fff;
+      transition: border-color .2s, background .2s, transform .12s;
+      user-select: none; gap: 1px;
+    }
+    .inv-slot:active { transform: scale(.90); }
+    .inv-slot.selected {
+      border-color: rgba(255,224,102,.7); background: rgba(255,224,102,.12);
+      box-shadow: 0 0 20px rgba(255,224,102,.3), 0 0 0 3px rgba(255,224,102,.1);
+    }
+    .inv-slot .slot-icon { font-size: 24px; line-height: 1; }
+    .inv-slot .slot-count { font-size: 10px; color: #ffe066; font-weight: 900; line-height: 1; }
+    .inv-slot .slot-name { font-size: 7px; color: rgba(255,255,255,.4); letter-spacing: .02em; }
+
+    /* ── Action Button ───────────────────────── */
+    #action-btn {
+      position: fixed; bottom: 100px; right: 22px;
+      width: 72px; height: 72px;
+      background: linear-gradient(140deg, #4ecdc4 0%, #26a69a 55%, #1a7a70 100%);
+      border-radius: 50%; border: 2.5px solid rgba(255,255,255,.32);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10; font-size: 30px;
+      box-shadow: 0 6px 28px rgba(0,0,0,.5);
+      transition: transform .12s; user-select: none;
+      animation: actionPulse 2.6s ease-in-out infinite;
+    }
+    @keyframes actionPulse {
+      0%,100% { box-shadow: 0 6px 28px rgba(0,0,0,.5), 0 0 0 0 rgba(78,205,196,.5); }
+      55%      { box-shadow: 0 6px 28px rgba(0,0,0,.5), 0 0 0 12px rgba(78,205,196,.0); }
+    }
+    #action-btn:active { transform: scale(.86); animation: none; }
+    #action-label {
+      position: fixed; bottom: 176px; right: 14px;
+      color: rgba(255,255,255,.8); font-size: 10px; font-weight: 800;
+      text-shadow: 0 1px 6px rgba(0,0,0,.9); z-index: 10;
+      text-align: center; width: 84px; pointer-events: none;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+
+    /* ── Joystick ────────────────────────────── */
     #joystick-zone {
       position: fixed; bottom: 88px; left: 22px;
-      width: 120px; height: 120px; z-index: 10;
-      pointer-events: all;
+      width: 120px; height: 120px; z-index: 10; pointer-events: all;
     }
     #joystick-base {
       position: absolute; inset: 0;
       background: radial-gradient(circle at center,
         rgba(255,255,255,.07) 0%, rgba(255,255,255,.03) 70%, transparent 100%);
-      border: 2px solid rgba(255,255,255,.18);
-      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.18); border-radius: 50%;
       box-shadow: 0 0 24px rgba(78,205,196,.1), inset 0 1px 0 rgba(255,255,255,.08);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     }
     #joystick-base::before, #joystick-base::after {
       content: ''; position: absolute; background: rgba(255,255,255,.07); border-radius: 1px;
@@ -220,204 +261,145 @@
     #joystick-base::before { width: 1.5px; height: 50%; top: 25%; left: 50%; transform: translateX(-50%); }
     #joystick-base::after  { height: 1.5px; width: 50%; left: 25%; top: 50%; transform: translateY(-50%); }
     #joystick-stick {
-      position: absolute;
-      width: 48px; height: 48px;
+      position: absolute; width: 48px; height: 48px;
       background: radial-gradient(circle at 38% 32%,
         rgba(255,255,255,.75), rgba(78,205,196,.8) 55%, rgba(20,100,90,1));
-      border: 2px solid rgba(255,255,255,.5);
-      border-radius: 50%;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
+      border: 2px solid rgba(255,255,255,.5); border-radius: 50%;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
       box-shadow: 0 5px 16px rgba(0,0,0,.45), 0 0 12px rgba(78,205,196,.35);
     }
 
-    /* ── Dialogue Box ────────────────────────────── */
+    /* ── Dialogue Box ────────────────────────── */
     #dialogue-box {
       position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
       width: min(440px, calc(100vw - 32px));
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(6,18,38,.9);
-      border: 1.5px solid rgba(78,205,196,.3);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(6,18,38,.9); border: 1.5px solid rgba(78,205,196,.3);
       border-radius: 22px; padding: 18px 22px;
       color: rgba(218,245,245,.92); font-size: 14px; line-height: 1.65;
       z-index: 20; display: none;
-      box-shadow: 0 12px 50px rgba(0,0,0,.75), 0 0 0 1px rgba(78,205,196,.08), inset 0 1px 0 rgba(255,255,255,.06);
+      box-shadow: 0 12px 50px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.06);
     }
     .npc-name {
       font-weight: 900; color: #4ecdc4; margin-bottom: 8px; font-size: 11px;
-      text-transform: uppercase; letter-spacing: 0.12em;
+      text-transform: uppercase; letter-spacing: .12em;
       display: flex; align-items: center; gap: 7px;
     }
     .npc-name::before {
-      content: ''; width: 7px; height: 7px;
-      background: #4ecdc4; border-radius: 50%;
+      content: ''; width: 7px; height: 7px; background: #4ecdc4; border-radius: 50%;
       box-shadow: 0 0 8px rgba(78,205,196,.8);
       animation: dotBlink 1.5s ease-in-out infinite; flex-shrink: 0;
     }
     @keyframes dotBlink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
-    #dialogue-text { color: rgba(215,242,242,.88); }
     #dialogue-close {
       margin-top: 14px; text-align: right;
       color: #4ecdc4; font-size: 11px; cursor: pointer; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.09em; opacity: .75;
+      text-transform: uppercase; letter-spacing: .09em; opacity: .75;
     }
-    #dialogue-close:active { opacity: 1; }
 
-    /* ── Shop Modal ──────────────────────────────── */
+    /* ── Shop Modal ──────────────────────────── */
     #shop-modal {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,.75);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      display: none; align-items: center; justify-content: center;
-      z-index: 30;
+      background: rgba(0,0,0,.75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: none; align-items: center; justify-content: center; z-index: 30;
     }
     #shop-modal.open { display: flex; }
     #shop-panel {
       background: linear-gradient(165deg, rgba(12,28,18,.97) 0%, rgba(6,14,28,.97) 100%);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border: 1.5px solid rgba(78,205,196,.2);
-      border-radius: 26px; padding: 24px;
-      width: min(400px, calc(100vw - 24px));
-      max-height: 84vh; overflow-y: auto;
-      color: #eee;
-      box-shadow: 0 28px 90px rgba(0,0,0,.75), 0 0 0 1px rgba(78,205,196,.06), inset 0 1px 0 rgba(255,255,255,.05);
+      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      border: 1.5px solid rgba(78,205,196,.2); border-radius: 26px; padding: 24px;
+      width: min(400px, calc(100vw - 24px)); max-height: 84vh; overflow-y: auto; color: #eee;
+      box-shadow: 0 28px 90px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.05);
     }
     #shop-panel::-webkit-scrollbar { width: 3px; }
-    #shop-panel::-webkit-scrollbar-track { background: transparent; }
     #shop-panel::-webkit-scrollbar-thumb { background: rgba(78,205,196,.25); border-radius: 2px; }
-    #shop-panel h2 {
-      color: #ffe066; text-align: center; margin-bottom: 4px;
-      font-size: 22px; font-weight: 900; letter-spacing: -0.02em;
-    }
-    #shop-money {
-      text-align: center; color: #ffe066; font-size: 14px;
-      margin-bottom: 18px; font-weight: 800;
-      background: rgba(255,224,102,.07); border: 1px solid rgba(255,224,102,.14);
-      border-radius: 14px; padding: 7px;
-    }
+    #shop-panel h2 { color: #ffe066; text-align: center; margin-bottom: 4px; font-size: 22px; font-weight: 900; }
+    #shop-money { text-align: center; color: #ffe066; font-size: 14px; margin-bottom: 18px; font-weight: 800;
+      background: rgba(255,224,102,.07); border: 1px solid rgba(255,224,102,.14); border-radius: 14px; padding: 7px; }
     .shop-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
     .shop-tab {
       flex: 1; padding: 9px; border-radius: 14px; text-align: center;
       cursor: pointer; font-size: 11px; font-weight: 800;
       background: rgba(255,255,255,.05); color: rgba(255,255,255,.45);
-      border: 1px solid rgba(255,255,255,.07);
-      transition: all .2s; text-transform: uppercase; letter-spacing: 0.05em;
-      font-family: inherit;
+      border: 1px solid rgba(255,255,255,.07); transition: all .2s;
+      text-transform: uppercase; letter-spacing: .05em; font-family: inherit;
     }
-    .shop-tab.active {
-      background: rgba(78,205,196,.16); color: #4ecdc4;
-      border-color: rgba(78,205,196,.3);
-      box-shadow: 0 0 16px rgba(78,205,196,.15);
-    }
+    .shop-tab.active { background: rgba(78,205,196,.16); color: #4ecdc4; border-color: rgba(78,205,196,.3); }
     .shop-item {
       display: flex; justify-content: space-between; align-items: center;
       padding: 13px 15px; border-radius: 16px;
-      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
-      margin-bottom: 8px; transition: background .2s;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); margin-bottom: 8px;
     }
-    .shop-item:active { background: rgba(255,255,255,.07); }
     .shop-item-info .item-name { font-weight: 800; font-size: 14px; }
     .shop-item-info .item-desc { color: rgba(255,255,255,.4); font-size: 11px; margin-top: 3px; }
     .shop-item-price { color: #ffe066; font-weight: 900; font-size: 16px; margin-right: 8px; }
     .shop-btn-buy, .shop-btn-sell {
       padding: 8px 18px; border-radius: 12px; cursor: pointer;
-      font-size: 12px; font-weight: 800; border: none;
-      margin-left: 4px; font-family: inherit;
-      transition: transform .12s, opacity .15s;
+      font-size: 12px; font-weight: 800; border: none; margin-left: 4px; font-family: inherit;
+      transition: transform .12s;
     }
     .shop-btn-buy  { background: linear-gradient(135deg, #4ecdc4, #26a69a); color: #001814; }
     .shop-btn-sell { background: linear-gradient(135deg, #f7a01e, #ffd200); color: #1a0800; }
-    .shop-btn-buy:active, .shop-btn-sell:active { transform: scale(.90); opacity: .85; }
+    .shop-btn-buy:active, .shop-btn-sell:active { transform: scale(.90); }
     #shop-close {
       display: block; width: 100%; padding: 12px;
       background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09);
       border-radius: 14px; color: rgba(255,255,255,.45); font-size: 13px;
       cursor: pointer; margin-top: 12px; font-family: inherit; font-weight: 700;
-      transition: background .2s, color .2s;
     }
-    #shop-close:active { background: rgba(255,255,255,.1); color: rgba(255,255,255,.7); }
 
-    /* ── Loading Screen ──────────────────────────── */
+    /* ── Loading Screen ──────────────────────── */
     #loading-screen {
       position: fixed; inset: 0; z-index: 100;
       background: radial-gradient(ellipse at 50% 35%, #1a0a4e 0%, #0a1838 45%, #040c1c 100%);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff;
     }
     #loading-logo {
       width: 110px; height: 110px; margin-bottom: 24px;
       filter: drop-shadow(0 0 30px rgba(78,205,196,.55));
       animation: logoFloat 3s ease-in-out infinite;
     }
-    @keyframes logoFloat {
-      0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}
-    }
+    @keyframes logoFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
     #loading-screen h1 {
       font-size: 32px; color: #4ecdc4; margin-bottom: 6px; font-weight: 900;
-      letter-spacing: -0.02em;
-      text-shadow: 0 0 40px rgba(78,205,196,.55), 0 2px 10px rgba(0,0,0,.5);
+      letter-spacing: -.02em; text-shadow: 0 0 40px rgba(78,205,196,.55);
     }
-    #loading-screen p { color: rgba(255,255,255,.4); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
-    #loading-bar-wrap {
-      width: 220px; height: 4px;
-      background: rgba(255,255,255,.07);
-      border-radius: 2px; margin-top: 28px; overflow: hidden;
-    }
-    #loading-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #4ecdc4 0%, #ffe066 100%);
-      width: 0%; transition: width .3s ease;
-      border-radius: 2px;
-      box-shadow: 0 0 12px rgba(78,205,196,.8);
-    }
-    #loading-nav {
-      margin-top: 28px;
-      display: flex; gap: 20px;
-    }
-    #loading-nav a {
-      color: rgba(78,205,196,.6); font-size: 12px; font-weight: 700;
-      text-decoration: none; letter-spacing: 0.05em;
-      transition: color .2s;
-    }
-    #loading-nav a:hover { color: #4ecdc4; }
+    #loading-screen p { color: rgba(255,255,255,.4); font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+    #loading-bar-wrap { width: 220px; height: 4px; background: rgba(255,255,255,.07); border-radius: 2px; margin-top: 28px; overflow: hidden; }
+    #loading-bar { height: 100%; background: linear-gradient(90deg, #4ecdc4 0%, #ffe066 100%); width: 0%; transition: width .3s; border-radius: 2px; box-shadow: 0 0 12px rgba(78,205,196,.8); }
+    #loading-links { margin-top: 28px; display: flex; gap: 24px; }
+    #loading-links a { color: rgba(78,205,196,.65); font-size: 12px; font-weight: 700; text-decoration: none; letter-spacing: .04em; transition: color .2s; }
+    #loading-links a:hover { color: #4ecdc4; }
 
-    /* ── Toast ───────────────────────────────────── */
+    /* ── Toast ───────────────────────────────── */
     #toast {
       position: fixed; top: 70px; left: 50%;
       transform: translateX(-50%) translateY(-6px) scale(.96);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      background: rgba(10,20,36,.92);
-      color: #fff; padding: 10px 22px;
-      border-radius: 28px; font-size: 13px; font-weight: 800;
-      z-index: 50; opacity: 0;
-      transition: opacity .28s ease, transform .28s ease;
-      pointer-events: none;
-      border: 1.5px solid rgba(255,255,255,.13);
-      white-space: nowrap;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      background: rgba(10,20,36,.92); color: #fff; padding: 10px 22px;
+      border-radius: 28px; font-size: 13px; font-weight: 800; z-index: 50;
+      opacity: 0; transition: opacity .28s, transform .28s; pointer-events: none;
+      border: 1.5px solid rgba(255,255,255,.13); white-space: nowrap;
       box-shadow: 0 6px 28px rgba(0,0,0,.45);
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
   </style>
 </head>
 <body>
-  <!-- Loading -->
+  <!-- Loading Screen -->
   <div id="loading-screen">
     <img id="loading-logo" src="/logo.svg" alt="Lagoon Valley" onerror="this.style.display='none'"/>
     <h1>Lagoon Valley</h1>
     <p>Loading your tropical paradise...</p>
     <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
-    <nav id="loading-nav">
+    <nav id="loading-links">
       <a href="/about.html">About</a>
       <a href="/how-to-play.html">How to Play</a>
       <a href="/changelog.html">Updates</a>
     </nav>
   </div>
 
-  <!-- Canvas -->
+  <!-- 3D Canvas -->
   <div id="canvas-container"></div>
 
   <!-- HUD -->
@@ -439,11 +421,65 @@
   <!-- Toast -->
   <div id="toast"></div>
 
-  <!-- Help Button -->
-  <a id="help-btn" href="/how-to-play.html" title="How to Play">?</a>
-
   <!-- Shop Button -->
   <div id="shop-btn">🛒 Shop</div>
+
+  <!-- ☰ Menu Button -->
+  <div id="menu-btn" onclick="toggleGameMenu()">
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- Slide-in Game Menu -->
+  <div id="game-menu">
+    <div id="game-menu-backdrop" onclick="toggleGameMenu()"></div>
+    <div id="game-menu-panel">
+      <div class="menu-logo">
+        <img src="/logo.svg" alt="" onerror="this.style.display='none'"/>
+        <span>Lagoon Valley</span>
+      </div>
+      <nav class="menu-nav">
+        <a href="/how-to-play.html">
+          <span class="menu-icon">📖</span>
+          <span class="menu-text">
+            How to Play
+            <div class="menu-desc">Controls, farming guide, tips</div>
+          </span>
+          <span>›</span>
+        </a>
+        <a href="/about.html">
+          <span class="menu-icon">🌴</span>
+          <span class="menu-text">
+            About
+            <div class="menu-desc">The story behind the valley</div>
+          </span>
+          <span>›</span>
+        </a>
+        <a href="/changelog.html">
+          <span class="menu-icon">📋</span>
+          <span class="menu-text">
+            Updates
+            <div class="menu-desc">What's new in Lagoon Valley</div>
+          </span>
+          <span>›</span>
+        </a>
+        <a href="https://github.com/yusufsafary/lagoonvalley" target="_blank" rel="noopener">
+          <span class="menu-icon">⭐</span>
+          <span class="menu-text">
+            GitHub
+            <div class="menu-desc">View source, leave a star</div>
+          </span>
+          <span>›</span>
+        </a>
+        <button class="menu-close-btn" onclick="toggleGameMenu()">
+          <span class="menu-icon">🎮</span>
+          <span class="menu-text">Back to Game</span>
+        </button>
+      </nav>
+      <div class="menu-footer">
+        v0.2.0 · Open source · <a href="https://lagoonvalley.xyz">lagoonvalley.xyz</a>
+      </div>
+    </div>
+  </div>
 
   <!-- Inventory Bar -->
   <div id="inventory-bar"></div>
@@ -461,7 +497,7 @@
   <!-- Dialogue Box -->
   <div id="dialogue-box">
     <div class="npc-name" id="npc-name">Mira</div>
-    <div class="dialogue-text" id="dialogue-text"></div>
+    <div id="dialogue-text"></div>
     <div id="dialogue-close">[ Tap to continue ]</div>
   </div>
 
@@ -479,6 +515,14 @@
     </div>
   </div>
 
+  <script>
+    function toggleGameMenu() {
+      const menu = document.getElementById('game-menu');
+      const btn  = document.getElementById('menu-btn');
+      const open = menu.classList.toggle('open');
+      btn.classList.toggle('open', open);
+    }
+  </script>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>
